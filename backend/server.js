@@ -1,28 +1,20 @@
 import "dotenv/config"
 import { createServer } from "http"
-import app from "./app.js"
+import configureApp from "./app.js"
 
-const normalizePort = val => {
+function normalizePort(val) {
     const port = parseInt(val, 10)
-
-    if (isNaN(port)) {
-        return val
-    }
-    if (port >= 0) {
-        return port
-    }
-    return false
+    return isNaN(port) ? val : port >= 0 ? port : false
 }
-// eslint-disable-next-line no-undef
-const port = normalizePort(process.env.SERVER_PORT || "3000")
-app.set("port", port)
 
-const errorHandler = error => {
+const port = normalizePort(process.env.SERVER_PORT || "3000")
+
+function errorHandler(error, server) {
     if (error.syscall !== "listen") {
         throw error
     }
     const address = server.address()
-    const bind = typeof address === "string" ? "pipe " + address : "port: " + port
+    const bind = typeof address === "string" ? `Pipe ${address}` : `Port ${port}`
 
     switch (error.code) {
         case "EACCES":
@@ -38,16 +30,23 @@ const errorHandler = error => {
     }
 }
 
-const server = createServer(app)
+async function startServer() {
+    try {
+        const app = await configureApp()
+        app.set("port", port)
+        const server = createServer(app)
+        server.on("error", error => errorHandler(error, server))
+        server.on("listening", () => {
+            const address = server.address()
+            const bind = typeof address === "string" ? `Pipe ${address}` : `Port ${port}`
+            console.log("Listening on " + bind)
+        })
 
-server.on("error", errorHandler)
-server.on("listening", () => {
-    const address = server.address()
-    const bind = typeof address === "string" ? "pipe " + address : "port " + port
-    console.log("Listening on " + bind)
-})
+        server.listen(port)
+    } catch (error) {
+        console.error("Une erreur est survenue lors de la configuration de l'application.")
+        process.exit(1)
+    }
+}
 
-server.listen(port)
-
-
-
+startServer()
