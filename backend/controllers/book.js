@@ -1,34 +1,72 @@
 import { unlink } from "fs"
-import Thing from "../models/thing.js"
+import Book from "../models/book.js"
 
-export function createThing(req, res, next) {
-
-    const thingObject = JSON.parse(req.body.thing)
-    delete thingObject._id
-    delete thingObject.userId
-    const thing = new Thing({
-        ...thingObject,
-        userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-    })
-    thing.save().then(
-        () => {
-            res.status(201).json({
-                message: "Objet enregistré!"
-            })
-        }
-    ).catch(
-        (error) => {
-            const imagePath = `images/${req.file.filename}`
-            unlink(imagePath, () => {
-                res.status(400).json({
-                    error
-                })
-            })
-        }
-    )
+export async function getAllBooks(req, res) {
+    try {
+        const books = await Book.find()
+        res.status(200).json(books)
+    } catch (err) {
+        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+    }
 }
 
+export async function getOneBook(req, res) {
+    try {
+        const book = await Book.findOne({ _id: req.params.id })
+        res.status(200).json(book)
+    } catch (err) {
+        if (err.message.includes("Cast to ObjectId failed for value")) {
+            res.status(404).json({ message: "Ce livre n'existe pas" })
+        } else {
+            res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+        }
+    }
+}
+
+export async function getBestRating(req, res) {
+    try {
+        const books = await Book.find()
+        const sortedBooks = books.sort((a, b) => {
+            if (b.averageRating !== a.averageRating) {
+                return b.averageRating - a.averageRating
+            }
+            return books.indexOf(b) - books.indexOf(a) // Si 2 livres ont la même note moyenne, on privilégie le livre ajouté le plus récemment
+        })
+        const bestBooks = sortedBooks.slice(0, 3)
+
+        res.status(200).json(bestBooks)
+    } catch (err) {
+        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+    }
+}
+
+export async function createBook(req, res) {
+    try {
+        const bookObject = JSON.parse(req.body.book)
+        // On supprime le userId envoyé par la requête, on se servira de celui retourné par le middleware auth pour s'assurer de l'identité de l'utilisateur
+        delete bookObject.userId
+        bookObject.year = parseInt(bookObject.year) // La date reçue est en string, la DB attend un number
+
+        // Si l'utilisateur n'a pas choisi de note, ça retourne 0 comme note. Si on reçoit 0 on l'enlève pour ne pas fausser la note moyenne
+        if (bookObject.ratings[0].grade === 0) {
+            bookObject.ratings = []
+        }
+
+        const book = new Book({
+            ...bookObject,
+            userId: req.auth.userId,
+            imageUrl: `${req.protocol}://${req.get("host")}/${req.file.path}`
+        })
+
+        await book.save()
+
+        res.status(201).json({ message: "Livre créé avec succès" })
+    } catch (err) {
+        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+    }
+}
+
+/*
 export function getOneThing(req, res, next) {
     Thing.findOne({
         _id: req.params.id
@@ -109,17 +147,4 @@ export function deleteThing(req, res, next) {
             }
         )
 }
-
-export function getAllStuff(req, res, next) {
-    Thing.find().then(
-        (things) => {
-            res.status(200).json(things)
-        }
-    ).catch(
-        (error) => {
-            res.status(400).json({
-                error
-            })
-        }
-    )
-}
+ */

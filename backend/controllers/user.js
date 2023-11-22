@@ -18,15 +18,14 @@ export async function signup(req, res) {
 
         res.status(201).json({ message: "Utilisateur créé" })
 
-    } catch (error) {
-        res.status(error.status || 500).json({ error: error.message })
+    } catch (err) {
+        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
     }
 }
 
 export async function login(req, res) {
-    const secret = readFileSync("./.certs/private.pem")
-
     try {
+        const secret = readFileSync("./.certs/private.pem") // On encode le token avec la clé privée
         const user = await User.findOne({ email: req.body.email })
 
         if (!user) {
@@ -49,7 +48,7 @@ export async function login(req, res) {
                 { expiresIn: process.env.JWT_EXPIRE, algorithm: "RS256" }
             )
         })
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    } catch (err) {
+        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
     }
 }
