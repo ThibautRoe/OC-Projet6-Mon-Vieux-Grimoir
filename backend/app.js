@@ -3,11 +3,11 @@ import { connect } from "mongoose"
 import "dotenv/config"
 import * as path from "path"
 import { fileURLToPath } from "url"
-// import bookRoutes from "./routes/book.js"
 import userRoutes from "./routes/user.js"
+import bookRoutes from "./routes/book.js"
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const fileName = fileURLToPath(import.meta.url)
+const dirPath = path.dirname(fileName)
 
 export default async function configureApp() {
     if (!process.env.DB_USER || !process.env.DB_PASS || !process.env.DB_HOST) {
@@ -29,9 +29,10 @@ export default async function configureApp() {
         })
 
         app.use(express.json())
-        // app.use("/api/books", bookRoutes)
+
         app.use("/api/auth", userRoutes)
-        app.use("/images", express.static(path.join(__dirname, "images")))
+        app.use("/api/books", bookRoutes)
+        app.use("/images", express.static(path.join(dirPath, "images")))
 
         return app
     } catch (error) {

@@ -7,7 +7,7 @@ function normalizePort(val) {
     return isNaN(port) ? val : port >= 0 ? port : false
 }
 
-const port = normalizePort(process.env.SERVER_PORT || "3000")
+const port = normalizePort(process.env.SERVER_PORT || "4000")
 
 function errorHandler(error, server) {
     if (error.syscall !== "listen") {
@@ -44,7 +44,7 @@ async function startServer() {
 
         server.listen(port)
     } catch (error) {
-        console.error("Une erreur est survenue lors de la configuration de l'application.")
+        console.error("Une erreur est survenue lors de la configuration de l'application. ", error.message)
         process.exit(1)
     }
 }
