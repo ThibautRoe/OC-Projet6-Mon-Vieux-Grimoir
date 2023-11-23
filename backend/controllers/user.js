@@ -25,7 +25,7 @@ export async function signup(req, res) {
 
 export async function login(req, res) {
     try {
-        const secret = readFileSync("./.certs/private.pem") // On encode le token avec la clé privée
+        const secret = readFileSync(process.env.SSH_KEY_PRIVATE) // On encode le token avec la clé privée
         const user = await User.findOne({ email: req.body.email })
 
         if (!user) {

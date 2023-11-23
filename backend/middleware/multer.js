@@ -1,4 +1,5 @@
 import multer from "multer"
+import sharp from "sharp"
 const { diskStorage } = multer
 
 const ERROR_MESSAGES = {
@@ -31,6 +32,19 @@ const storage = diskStorage({
 
 const multerMiddleware = multer({ storage }).single("image")
 
+async function optimizeImage(file) {
+    const { path } = file
+    const outputPath = `${path.substring(0, path.lastIndexOf("."))}_optimized.webp`
+
+    await sharp(path)
+        .webp({ quality: 80 })
+        // On ne redimensionne l'image que si elle est plus grande que 600px en hauteur (le site l'affiche en 568px de hauteur max)
+        .resize({ height: 600, fit: "inside", withoutEnlargement: true, })
+        .toFile(outputPath)
+
+    return { ...file, path: outputPath }
+}
+
 export default (req, res, next) => {
     multerMiddleware(req, res, (err) => {
         const book = JSON.parse(req.body.book)
@@ -48,6 +62,8 @@ export default (req, res, next) => {
         } else {
             next()
         }
+
+        req.file = optimizeImage(req.file)
 
         if (response) {
             res.status(response.status).json(response.error ? { error: response.error } : { message: response.message })

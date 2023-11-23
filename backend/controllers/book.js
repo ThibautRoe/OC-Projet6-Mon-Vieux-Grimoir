@@ -41,6 +41,8 @@ export async function getBestRating(req, res) {
 }
 
 export async function createBook(req, res) {
+    console.log(req.file)
+
     try {
         const bookObject = JSON.parse(req.body.book)
         // On supprime le userId envoyé par la requête, on se servira de celui retourné par le middleware auth pour s'assurer de l'identité de l'utilisateur
