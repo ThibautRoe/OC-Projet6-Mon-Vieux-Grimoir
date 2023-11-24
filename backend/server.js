@@ -43,8 +43,8 @@ async function startServer() {
         })
 
         server.listen(port)
-    } catch (error) {
-        console.error("Une erreur est survenue lors de la configuration de l'application. ", error.message)
+    } catch (err) {
+        console.error("Une erreur est survenue lors de la configuration de l'application. ", err.message)
         process.exit(1)
     }
 }

@@ -1,12 +1,14 @@
 import { unlink } from "fs"
 import Book from "../models/book.js"
+import { ERROR_MESSAGES, RES_MESSAGES } from "../variables.js"
+
 
 export async function getAllBooks(req, res) {
     try {
         const books = await Book.find()
         res.status(200).json(books)
     } catch (err) {
-        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+        res.status(err.status || 500).json({ error: err.message || ERROR_MESSAGES.UNEXPECTED_ERROR })
     }
 }
 
@@ -15,10 +17,10 @@ export async function getOneBook(req, res) {
         const book = await Book.findOne({ _id: req.params.id })
         res.status(200).json(book)
     } catch (err) {
-        if (err.message.includes("Cast to ObjectId failed for value")) {
-            res.status(404).json({ message: "Ce livre n'existe pas" })
+        if (err.message.includes(ERROR_MESSAGES.MONGODB_OBJECTID_DOES_NOT_EXIST)) {
+            res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST })
         } else {
-            res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+            res.status(err.status || 500).json({ error: err.message || ERROR_MESSAGES.UNEXPECTED_ERROR })
         }
     }
 }
@@ -36,35 +38,35 @@ export async function getBestRating(req, res) {
 
         res.status(200).json(bestBooks)
     } catch (err) {
-        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+        res.status(err.status || 500).json({ error: err.message || ERROR_MESSAGES.UNEXPECTED_ERROR })
     }
 }
 
 export async function createBook(req, res) {
-    console.log(req.file)
-
     try {
         const bookObject = JSON.parse(req.body.book)
-        // On supprime le userId envoyé par la requête, on se servira de celui retourné par le middleware auth pour s'assurer de l'identité de l'utilisateur
-        delete bookObject.userId
+        // On actualise le userId pour mettre celui du JWT token pour s'assurer de l'identité de l'utilisateur
+        bookObject.userId = req.auth.userId
         bookObject.year = parseInt(bookObject.year) // La date reçue est en string, la DB attend un number
 
-        // Si l'utilisateur n'a pas choisi de note, ça retourne 0 comme note. Si on reçoit 0 on l'enlève pour ne pas fausser la note moyenne
+        // Si l'utilisateur n'a pas choisi de note sur le formulaire, ça retourne 0 comme note. Si on reçoit 0 on l'enlève pour ne pas fausser la note moyenne.
         if (bookObject.ratings[0].grade === 0) {
             bookObject.ratings = []
+        } else {
+            // Si on garde l'objet dans le tableau ratings, alors on actualise le userId pour mettre celui du JWT token pour s'assurer de l'identité de l'utilisateur
+            bookObject.ratings[0].userId = req.auth.userId
         }
 
         const book = new Book({
             ...bookObject,
-            userId: req.auth.userId,
             imageUrl: `${req.protocol}://${req.get("host")}/${req.file.path}`
         })
 
         await book.save()
 
-        res.status(201).json({ message: "Livre créé avec succès" })
+        res.status(201).json({ message: RES_MESSAGES.BOOK_CREATED })
     } catch (err) {
-        res.status(err.status || 500).json({ error: err.message || "Une erreur inattendue est survenue" })
+        res.status(err.status || 500).json({ error: err.message || ERROR_MESSAGES.UNEXPECTED_ERROR })
     }
 }
 

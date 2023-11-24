@@ -35,8 +35,8 @@ export default async function configureApp() {
         app.use("/images", express.static(path.join(dirPath, "images")))
 
         return app
-    } catch (error) {
+    } catch (err) {
         console.error("Connexion à MongoDB échouée !")
-        throw error
+        throw err
     }
 }
