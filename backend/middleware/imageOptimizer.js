@@ -2,6 +2,8 @@ import sharp from "sharp"
 import { unlinkSync, writeFileSync } from "fs"
 
 export default async (req, res, next) => {
+    if (req.skipImageProcessing) { return next() }
+
     //Optimisation du fichier d'origine
     const webpBuffer = await sharp(req.file.path)
         .webp({ quality: 80 })

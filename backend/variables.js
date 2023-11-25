@@ -6,14 +6,17 @@ export const ERROR_MESSAGES = {
     EMPTY_BODY: "Le corps de la requête est vide",
     MISSING_JWT_TOKEN: "Token JWT manquant",
     UNEXPECTED_ERROR: "Une erreur inattendue est survenue",
-    MONGODB_OBJECTID_DOES_NOT_EXIST: "Cast to ObjectId failed for value"
+    MONGODB_OBJECTID_DOES_NOT_EXIST: "Cast to ObjectId failed for value",
+    UNAUTHORIZED: "Opération non autorisée"
 }
 
 export const RES_MESSAGES = {
     INVALID_USER: "Email ou mot de passe incorrect",
     USER_CREATED: "Utilisateur créé avec succès",
     BOOK_DOES_NOT_EXIST: "Ce livre n'existe pas",
-    BOOK_CREATED: "Livre créé avec succès"
+    BOOK_CREATED: "Livre créé avec succès",
+    BOOK_MODIFIED: "Livre modifié avec succès",
+    BOOK_MODIFICATION_ERROR: "Erreur dans la modification du livre ou bien il n'y avait aucun champ à modifier"
 }
 
 export const MIME_TYPES = {

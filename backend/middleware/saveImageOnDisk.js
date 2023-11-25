@@ -8,19 +8,23 @@ let response = {}
 
 function requestChecker(req, file) {
     response = {} // Réinitialisation de response pour pas qu'il garde le contenu généré lors de la précédente requête
+    const isBodyEmpty = Object.keys(req.body).length === 0 ? true : false
 
     // On teste d'abord si le corps de la requête est vide, sinon le JSON.parse() posera une erreur
-    if (Object.keys(req.body).length === 0) {
+    if (isBodyEmpty) {
         response = { status: 400, message: ERROR_MESSAGES.EMPTY_BODY }
     } else {
         const book = JSON.parse(req.body.book)
+        const isMissingFields = !book.title || !book.author || !book.year || !book.genre
+        const isInvalidYear = isNaN(book.year) || book.year.length !== 4 || book.year > new Date().getFullYear()
+        const isWrongFileType = !MIME_TYPES[file.mimetype]
 
         // On teste que tous les champs du formulaire soient bien renseignés et que l'image est du bon format
-        if (!book.title || !book.author || !book.year || !book.genre) {
+        if (isMissingFields) {
             response = { status: 400, message: ERROR_MESSAGES.MISSING_FIELDS }
-        } else if (isNaN(book.year) || book.year.length !== 4 || book.year > new Date().getFullYear()) {
+        } else if (isInvalidYear) {
             response = { status: 400, message: ERROR_MESSAGES.INVALID_YEAR }
-        } else if (!MIME_TYPES[file.mimetype]) {
+        } else if (isWrongFileType) {
             response = { status: 400, message: ERROR_MESSAGES.WRONG_FILETYPE }
         }
     }
@@ -58,6 +62,8 @@ function fileFilter(req, file, callback) {
 const multerMiddleware = multer({ storage, fileFilter }).single("image") // .single("image") = un seul fichier à la fois, venant du champ "image" du formulaire
 
 export default (req, res, next) => {
+    if (req.skipImageProcessing) { return next() }
+
     try {
         // On initialise response comme ça car s'il n'y a pas d'image dans la requête, fileFilter() (et donc requestChecker()) n'est pas du tout
         // appelé et donc response ne sera pas actualisée avec les tests sur les champs du formulaire et sur le format de l'image. Donc si elle
