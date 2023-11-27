@@ -18,30 +18,26 @@ function requestChecker(req, file) {
     const isBodyEmpty = Object.keys(req.body).length === 0 ? true : false
 
     // On teste d'abord si le corps de la requête est vide, sinon le JSON.parse() posera une erreur
-    if (isBodyEmpty) {
-        response = { status: 400, message: RES_MESSAGES.EMPTY_BODY }
-    } else {
+    if (isBodyEmpty) { response = { status: 400, message: RES_MESSAGES.EMPTY_BODY } }
+    else {
         const book = JSON.parse(req.body.book)
         const isMissingFields = !book.title || !book.author || !book.year || !book.genre
         const isInvalidYear = isNaN(book.year) || book.year.length !== 4 || book.year > new Date().getFullYear()
-        const isWrongRating = book.ratings[0].grade < 0 || book.ratings[0].grade > 5 || book.averageRating < 0 || book.averageRating > 5
         const isWrongFileType = !MIME_TYPES[file.mimetype]
 
         // On teste que tous les champs du formulaire soient bien renseignés et que l'image est du bon format
-        if (isMissingFields) {
-            response = { status: 400, message: RES_MESSAGES.MISSING_FIELDS }
-        } else if (isInvalidYear) {
-            response = { status: 400, message: RES_MESSAGES.INVALID_YEAR }
-        } else if (isWrongRating) {
-            response = { status: 400, message: RES_MESSAGES.INVALID_RATING }
-        } else if (isWrongFileType) {
-            response = { status: 400, message: RES_MESSAGES.INVALID_FILETYPE }
+        if (isMissingFields) { response = { status: 400, message: RES_MESSAGES.MISSING_FIELDS } }
+        else if (isInvalidYear) { response = { status: 400, message: RES_MESSAGES.INVALID_YEAR } }
+        else if (isWrongFileType) { response = { status: 400, message: RES_MESSAGES.INVALID_FILETYPE } }
+        else if (book.ratings && book.averageRating) {
+            const isWrongRating = book.ratings[0].grade < 0 || book.ratings[0].grade > 5 || book.averageRating < 0 || book.averageRating > 5
+            if (isWrongRating) { response = { status: 400, message: RES_MESSAGES.INVALID_RATING } }
         }
     }
 
     // Si response (après voir été réinitialisé comme objet vide) devient un objet contenant la clé "status" après les tests ci-dessus,
     // c'est qu'il y a une erreur, alors on return true, sinon on return false
-    return (!!response.status)
+    return !!response.status
 }
 
 const storage = diskStorage({
