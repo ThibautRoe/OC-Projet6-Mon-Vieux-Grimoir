@@ -9,6 +9,13 @@ import bookRoutes from "./routes/book.js"
 const fileName = fileURLToPath(import.meta.url)
 const dirPath = path.dirname(fileName)
 
+/**
+ * Function to configure Express app
+ * @async
+ * @function configureApp
+ * @returns {object} - Express app
+ * @throws {Error}
+ */
 export default async function configureApp() {
     if (!process.env.DB_USER || !process.env.DB_PASS || !process.env.DB_HOST) {
         console.error("Les variables d'environnement DB_USER, DB_PASS et DB_HOST doivent être définies.")

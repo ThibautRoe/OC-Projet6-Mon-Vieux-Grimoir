@@ -2,6 +2,12 @@ import "dotenv/config"
 import { createServer } from "http"
 import configureApp from "./app.js"
 
+/**
+ * Function to return a valid port number
+ * @function normalizePort
+ * @param {number} val - Port number
+ * @returns {number}
+ */
 function normalizePort(val) {
     const port = parseInt(val, 10)
     return isNaN(port) ? val : port >= 0 ? port : false
@@ -9,6 +15,13 @@ function normalizePort(val) {
 
 const port = normalizePort(process.env.SERVER_PORT || "4000")
 
+/**
+ * Function to handle errors
+ * @function errorHandler
+ * @param {object} error - Error object
+ * @param {object} server - Node.js server
+ * @throws {Error}
+ */
 function errorHandler(error, server) {
     if (error.syscall !== "listen") {
         throw error
@@ -30,6 +43,11 @@ function errorHandler(error, server) {
     }
 }
 
+/**
+* function to start Node.js server 
+* @async
+* @function startServer
+*/
 async function startServer() {
     try {
         const app = await configureApp()

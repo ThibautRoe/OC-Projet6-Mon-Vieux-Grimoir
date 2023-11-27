@@ -1,4 +1,3 @@
-
 export default async (req, res, next) => {
     const isBodyEmpty = Object.keys(req.body).length === 0 ? true : false
 

@@ -1,22 +1,25 @@
-export const ERROR_MESSAGES = {
-    MISSING_FIELDS: "L'un des champs suivants est manquant : titre, auteur, année de publication, genre",
-    INVALID_YEAR: "Le champ année de publication doit être un nombre positif de 4 chiffres et doit être au maximum l'année en cours",
-    WRONG_FILETYPE: "Formats d'images acceptés : jpg/jpeg et png",
-    MISSING_IMAGE: "L'image est manquante",
-    EMPTY_BODY: "Le corps de la requête est vide",
-    MISSING_JWT_TOKEN: "Token JWT manquant",
-    UNEXPECTED_ERROR: "Une erreur inattendue est survenue",
-    MONGODB_OBJECTID_DOES_NOT_EXIST: "Cast to ObjectId failed for value",
-    UNAUTHORIZED: "Opération non autorisée"
-}
-
 export const RES_MESSAGES = {
-    INVALID_USER: "Email ou mot de passe incorrect",
-    USER_CREATED: "Utilisateur créé avec succès",
-    BOOK_DOES_NOT_EXIST: "Ce livre n'existe pas",
-    BOOK_CREATED: "Livre créé avec succès",
-    BOOK_MODIFIED: "Livre modifié avec succès",
-    BOOK_MODIFICATION_ERROR: "Erreur dans la modification du livre ou bien il n'y avait aucun champ à modifier"
+    MISSING_FIELDS: "One of the following fields is missing: titre, auteur, année de publication, genre",
+    INVALID_YEAR: "Année de publication field must be a positive number with 4 numbers and must be at maximum the current year",
+    INVALID_RATING: "Rating must be between 0 anb 5",
+    INVALID_FILETYPE: "Accepted picture formats: jpg/jpeg and png",
+    MISSING_IMAGE: "Picture is missing",
+    EMPTY_BODY: "Request body is empty",
+    MISSING_JWT_TOKEN: "JWT token is missing",
+    UNEXPECTED_ERROR: "An unexpected error has occured",
+    MONGODB_OBJECTID_ERROR: "Cast to ObjectId failed for value",
+    UNAUTHORIZED: "Unauthorized request",
+    INVALID_USER: "Wrong email and/or password",
+    USER_CREATED: "User created successfully",
+    BOOK_DOES_NOT_EXIST: "This book does not exist",
+    NO_BOOKS_IN_DB: "There are no books",
+    BOOK_CREATED: "Book created successfully",
+    BOOK_MODIFIED: "Book modified successfully",
+    BOOK_MODIFICATION_ERROR: "An error has occured while trying to updade the book, or there was nothing to update",
+    BOOK_DELETED: "Book deleted successfully",
+    BOOK_DELETION_ERROR: "An error has occured while trying to delete the book",
+    ALREADY_RATED: "You can rate a book only once",
+    ADD_RATING_ERROR: "An error has occured while trying to add your rating to the book"
 }
 
 export const MIME_TYPES = {
