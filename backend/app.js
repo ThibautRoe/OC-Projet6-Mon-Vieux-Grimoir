@@ -1,6 +1,6 @@
 import express from "express"
+import helmet from "helmet"
 import { connect } from "mongoose"
-import "dotenv/config"
 import * as path from "path"
 import { fileURLToPath } from "url"
 import userRoutes from "./routes/user.js"
@@ -27,6 +27,8 @@ export default async function configureApp() {
         console.log("Connexion à MongoDB réussie !")
 
         const app = express()
+
+        app.use(helmet({ crossOriginResourcePolicy: false }))
 
         app.use((req, res, next) => {
             res.setHeader("Access-Control-Allow-Origin", "*")

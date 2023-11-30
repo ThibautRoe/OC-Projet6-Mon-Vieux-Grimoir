@@ -1,9 +1,9 @@
 import { hash, compare } from "bcrypt"
 import { readFileSync } from "fs"
-import "dotenv/config"
 import { RES_MESSAGES } from "../variables.js"
 import User from "../models/user.js"
 import jwt from "jsonwebtoken"
+import validator from "validator"
 
 const { sign } = jwt
 
@@ -20,6 +20,8 @@ export async function signup(req, res) {
         const isBodyEmpty = Object.keys(req.body).length === 0 ? true : false
 
         if (isBodyEmpty) { return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY }) }
+
+        if (!validator.isStrongPassword(req.body.password)) { return res.status(400).json({ message: RES_MESSAGES.WEAK_PASSWORD }) }
 
         const hashedPassword = await hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUND))
 

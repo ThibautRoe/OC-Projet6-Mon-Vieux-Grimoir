@@ -1,5 +1,4 @@
 import { readFileSync } from "fs"
-import "dotenv/config"
 import { RES_MESSAGES } from "../variables.js"
 import jwt from "jsonwebtoken"
 

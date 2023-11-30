@@ -1,4 +1,3 @@
-import "dotenv/config"
 import { createServer } from "http"
 import configureApp from "./app.js"
 
