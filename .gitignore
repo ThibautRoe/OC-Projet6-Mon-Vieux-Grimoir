@@ -1,3 +1,9 @@
+# Local Netlify folder
+.netlify
+netlify.toml
+netlify
+
+
 .env
 .certs
 .eslintrc.json
