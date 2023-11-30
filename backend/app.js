@@ -6,11 +6,11 @@ import { fileURLToPath } from "url"
 import userRoutes from "./routes/user.js"
 import bookRoutes from "./routes/book.js"
 
-let fileName
+// const fileName = fileURLToPath(import.meta.url)
+const fileName = fileURLToPath(process.env.META_URL)
 let dirPath
 
 if (process.env.DEV_ENV) {
-    fileName = fileURLToPath(import.meta.url)
     dirPath = path.dirname(fileName)
 } else {
     dirPath = process.env.PROD_URL
