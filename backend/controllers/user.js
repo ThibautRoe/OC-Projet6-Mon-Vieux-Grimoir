@@ -57,7 +57,13 @@ export async function login(req, res) {
 
         if (!validator.isEmail(req.body.email)) { return res.status(400).json({ message: RES_MESSAGES.INVALID_EMAIL_FORMAT }) }
 
-        const secret = readFileSync(process.env.SSH_KEY_PRIVATE) // On encode le token avec la clé privée
+        let secret // On encode le token avec la clé privée
+
+        if (process.env.DEV_ENV) {
+            secret = readFileSync(process.env.SSH_KEY_PRIVATE)
+        } else {
+            secret = process.env.SSH_KEY_PRIVATE
+        }
 
         const user = await User.findOne({ email: req.body.email })
 

@@ -10,7 +10,13 @@ export default (req, res, next) => {
     }
 
     try {
-        const secret = readFileSync(process.env.SSH_KEY_PUBLIC) // On vérifie avec la clé publique
+        let secret // On vérifie avec la clé publique
+        if (process.env.DEV_ENV) {
+            secret = readFileSync(process.env.SSH_KEY_PUBLIC)
+        } else {
+            secret = process.env.SSH_KEY_PUBLIC
+        }
+
         const token = req.headers.authorization.split(" ")[1]
         const decodedToken = verify(token, secret)
         const userId = decodedToken.userId
