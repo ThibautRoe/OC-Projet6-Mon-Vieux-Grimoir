@@ -1,16 +1,11 @@
 import { Schema, model } from "mongoose"
 import uniqueValidator from "mongoose-unique-validator"
-import validator from "validator"
 
 const userSchema = new Schema({
     email: {
         type: String,
-        required: "Email address is required",
-        unique: true,
-        validate: {
-            validator: (email) => validator.isEmail(email),
-            message: "Email should have a valid syntax e.g: example@example.com"
-        }
+        required: true,
+        unique: true
     },
     password: { type: String, required: true }
 })

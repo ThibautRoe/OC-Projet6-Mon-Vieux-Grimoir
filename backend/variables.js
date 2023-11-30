@@ -5,6 +5,7 @@ export const RES_MESSAGES = {
     INVALID_FILETYPE: "Accepted picture formats: jpg/jpeg and png",
     MISSING_IMAGE: "Picture is missing",
     EMPTY_BODY: "Request body is empty",
+    INVALID_EMAIL_FORMAT: "Email should have a valid syntax e.g: example@example.com",
     WEAK_PASSWORD: "Password must be at least 8 characters and contain at least 1 uppercase letter + 1 lowercase letter + 1 number + 1 special character",
     MISSING_JWT_TOKEN: "JWT token is missing",
     UNEXPECTED_ERROR: "An unexpected error has occured",

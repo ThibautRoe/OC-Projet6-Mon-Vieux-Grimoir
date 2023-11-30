@@ -21,6 +21,8 @@ export async function signup(req, res) {
 
         if (isBodyEmpty) { return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY }) }
 
+        if (!validator.isEmail(req.body.email)) { return res.status(400).json({ message: RES_MESSAGES.INVALID_EMAIL_FORMAT }) }
+
         if (!validator.isStrongPassword(req.body.password)) { return res.status(400).json({ message: RES_MESSAGES.WEAK_PASSWORD }) }
 
         const hashedPassword = await hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUND))
@@ -53,7 +55,10 @@ export async function login(req, res) {
 
         if (isBodyEmpty) { return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY }) }
 
+        if (!validator.isEmail(req.body.email)) { return res.status(400).json({ message: RES_MESSAGES.INVALID_EMAIL_FORMAT }) }
+
         const secret = readFileSync(process.env.SSH_KEY_PRIVATE) // On encode le token avec la clé privée
+
         const user = await User.findOne({ email: req.body.email })
 
         if (!user) { return res.status(400).json({ message: RES_MESSAGES.INVALID_USER }) }
