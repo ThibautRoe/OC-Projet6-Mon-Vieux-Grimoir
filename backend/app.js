@@ -6,15 +6,8 @@ import { fileURLToPath } from "url"
 import userRoutes from "./routes/user.js"
 import bookRoutes from "./routes/book.js"
 
-// const fileName = fileURLToPath(import.meta.url)
-const fileName = fileURLToPath(process.env.META_URL)
-let dirPath
-
-if (process.env.DEV_ENV) {
-    dirPath = path.dirname(fileName)
-} else {
-    dirPath = process.env.PROD_URL
-}
+const fileName = fileURLToPath(import.meta.url)
+const dirPath = path.dirname(fileName)
 
 /**
  * Function to configure Express app
