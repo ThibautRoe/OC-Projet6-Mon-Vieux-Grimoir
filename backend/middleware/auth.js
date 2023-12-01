@@ -1,5 +1,5 @@
 import { readFileSync } from "fs"
-import { RES_MESSAGES } from "../variables.js"
+import { RES_MESSAGES } from "../constants.js"
 import jwt from "jsonwebtoken"
 
 const { verify } = jwt

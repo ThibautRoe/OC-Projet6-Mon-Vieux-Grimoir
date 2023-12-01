@@ -21,7 +21,8 @@ export const RES_MESSAGES = {
     BOOK_DELETED: "Book deleted successfully",
     BOOK_DELETION_ERROR: "An error has occured while trying to delete the book",
     ALREADY_RATED: "You can rate a book only once",
-    ADD_RATING_ERROR: "An error has occured while trying to add your rating to the book"
+    ADD_RATING_ERROR: "An error has occured while trying to add your rating to the book",
+    RATE_LIMIT: "Please try again later"
 }
 
 export const MIME_TYPES = {

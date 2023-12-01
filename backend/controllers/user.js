@@ -1,6 +1,6 @@
 import { hash, compare } from "bcrypt"
 import { readFileSync } from "fs"
-import { RES_MESSAGES } from "../variables.js"
+import { RES_MESSAGES } from "../constants.js"
 import User from "../models/user.js"
 import jwt from "jsonwebtoken"
 import validator from "validator"

@@ -1,6 +1,6 @@
 import Book from "../models/book.js"
 import { unlinkSync } from "fs"
-import { RES_MESSAGES } from "../variables.js"
+import { RES_MESSAGES } from "../constants.js"
 
 /**
  * Fonction permettant de récupérer tous les livres de la DB

@@ -1,4 +1,4 @@
-import { RES_MESSAGES, MIME_TYPES } from "../variables.js"
+import { RES_MESSAGES, MIME_TYPES } from "../constants.js"
 import multer from "multer"
 
 const { diskStorage } = multer

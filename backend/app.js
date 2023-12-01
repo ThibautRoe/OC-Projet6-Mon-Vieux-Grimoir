@@ -1,5 +1,6 @@
 import express from "express"
 import helmet from "helmet"
+import { globalLimiter, authLimiter, booksLimiter } from "./middleware/limiter.js"
 import { connect } from "mongoose"
 import * as path from "path"
 import { fileURLToPath } from "url"
@@ -39,8 +40,10 @@ export default async function configureApp() {
 
         app.use(express.json())
 
-        app.use("/api/auth", userRoutes)
-        app.use("/api/books", bookRoutes)
+        app.use(globalLimiter)
+
+        app.use("/api/auth", authLimiter, userRoutes)
+        app.use("/api/books", booksLimiter, bookRoutes)
         app.use("/images", express.static(path.join(dirPath, "images")))
 
         return app
