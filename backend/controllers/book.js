@@ -85,7 +85,7 @@ export async function getBestRating(req, res) {
  */
 export async function createBook(req, res) {
     try {
-        const bookObject = JSON.parse(req.body.book)
+        let bookObject = JSON.parse(req.body.book)
         // On actualise le userId pour mettre celui du token JWT pour s'assurer de l'identité de l'utilisateur
         bookObject.userId = req.auth.userId
         bookObject.ratings[0].userId = req.auth.userId
@@ -115,11 +115,11 @@ export async function modifyBook(req, res) {
         // On récupère le livre à modifier depuis la DB, ce qui servira à :
         // -Checker si le userId du livre correspond bien à celui du user qui a initié la requête
         // -A récupérer l'URL de l'image actuelle si on ne la modifie pas (il faut quand même qu'on la fournisse car c'est un champ requis du model Book)
-        const bookToUpdate = await Book.findOne({ _id: req.params.id })
+        let bookToUpdate = await Book.findOne({ _id: req.params.id })
 
         if (!bookToUpdate) { return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST }) }
 
-        const updatedBook = req.file ? JSON.parse(req.body.book) : { ...req.body }
+        let updatedBook = req.file ? JSON.parse(req.body.book) : { ...req.body }
         // On actualise le userId pour mettre celui du token JWT pour s'assurer de l'identité de l'utilisateur
         updatedBook.userId = req.auth.userId
 
@@ -213,11 +213,11 @@ export async function rateBook(req, res) {
 
         if (isBodyEmpty) { return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY }) }
 
-        const newRating = { ...req.body }
+        let newRating = { ...req.body }
 
         if (newRating.rating < 0 || newRating.rating > 5) { return res.status(400).json({ message: RES_MESSAGES.INVALID_RATING }) }
 
-        const bookToRate = await Book.findOne({ _id: req.params.id })
+        let bookToRate = await Book.findOne({ _id: req.params.id })
 
         if (!bookToRate) { return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST }) }
 
@@ -228,27 +228,18 @@ export async function rateBook(req, res) {
         delete newRating.rating
 
         // On check si l'utilisateur a déjà déposé une note
-        let oldRatings = bookToRate.ratings
-        const hasUserAlreadyRated = oldRatings.some(item => item.userId === newRating.userId);
+        const hasUserAlreadyRated = bookToRate.ratings.some(item => item.userId === newRating.userId);
 
         if (hasUserAlreadyRated) { return res.status(400).json({ message: RES_MESSAGES.ALREADY_RATED }) }
 
         // Calcul de la nouvelle note moyenne
-        oldRatings.push(newRating)
-        const sum = oldRatings.reduce((total, item) => total + item.grade, 0)
-        const newAverageRating = sum / oldRatings.length
+        bookToRate.ratings.push(newRating)
+        const sum = bookToRate.ratings.reduce((total, item) => total + item.grade, 0)
+        bookToRate.averageRating = sum / bookToRate.ratings.length
 
-        const updatedBook = await Book.findOneAndUpdate(
-            { _id: req.params.id },
-            {
-                $push: { ratings: newRating },
-                averageRating: newAverageRating
-            },
-            { new: true, useFindAndModify: false }) // new: true pour que mongoose renvoie de document mis à jour plutôt que le document d'origine
+        const updatedBook = await bookToRate.save()
 
-        if (updatedBook) { return res.status(200).json(updatedBook) }
-
-        return res.status(500).json({ message: RES_MESSAGES.ADD_RATING_ERROR })
+        return res.status(200).json(updatedBook)
     } catch (err) {
         if (err.message.includes(RES_MESSAGES.MONGODB_OBJECTID_ERROR)) {
             res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST })
