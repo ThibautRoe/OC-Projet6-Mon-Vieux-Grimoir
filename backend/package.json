@@ -11,8 +11,8 @@
     },
     "scripts": {
         "start": "node --env-file=.env.local server.js",
-        "dev": "nodemon --env-file=.env.local server.js",
-        "debug": "node --env-file=.env.local --inspect server.js"
+        "dev": "node --watch --env-file=.env.local server.js",
+        "debug": "node --inspect --env-file=.env.local  server.js"
     },
     "author": "",
     "license": "ISC",
