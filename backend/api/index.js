@@ -1,4 +1,4 @@
-import configureApp from "../app-vercel.js"
+import configureApp from "../app.js"
 
 const app = await configureApp()
 
