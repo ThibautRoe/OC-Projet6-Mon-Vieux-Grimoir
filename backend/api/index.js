@@ -643,6 +643,15 @@ export default async function configureApp() {
         console.log("Connexion à MongoDB réussie !")
 
         const app = express()
+        const PORT = 4000
+
+        app.listen(PORT, () => {
+            console.log(`Listening on port ${PORT}`)
+        })
+
+        app.get("/", (req, res) => {
+            res.send("Hey this is my API running 🥳")
+        })
 
         app.use(helmet({ crossOriginResourcePolicy: false }))
 
@@ -667,7 +676,7 @@ export default async function configureApp() {
 
         console.log("test after router")
 
-        return app
+        module.exports = app
     } catch (error) {
         console.error("Connexion à MongoDB échouée !")
         throw error
