@@ -1,3 +1,3 @@
-import app from "../vercel-api.js"
+import app from "../vercel-api"
 
 export default app
