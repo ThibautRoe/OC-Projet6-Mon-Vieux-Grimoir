@@ -12,7 +12,8 @@
     "scripts": {
         "start": "node --env-file=.env.local server.js",
         "dev": "node --watch --env-file=.env.local server.js",
-        "debug": "node --inspect --env-file=.env.local  server.js"
+        "debug": "node --inspect --env-file=.env.local  server.js",
+        "vercel-build": "echo hello"
     },
     "author": "",
     "license": "ISC",
