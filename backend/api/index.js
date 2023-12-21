@@ -659,9 +659,13 @@ export default async function configureApp() {
 
         app.use(globalLimiter)
 
+        console.log("test before router")
+
         app.use("/api/auth", authLimiter1, authLimiter2, userRouter)
         app.use("/api/books", booksLimiter, booksRouter)
         app.use("/images", express.static(path.join(dirPath, "images")))
+
+        console.log("test after router")
 
         return app
     } catch (error) {
