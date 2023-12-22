@@ -7,13 +7,6 @@ import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 
-import { API_ROUTES } from "./utils/constants"
-
-console.log(API_ROUTES.SIGN_UP)
-console.log(API_ROUTES.SIGN_IN)
-console.log(API_ROUTES.BOOKS)
-console.log(API_ROUTES.BEST_RATED)
-
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
     <React.StrictMode>
