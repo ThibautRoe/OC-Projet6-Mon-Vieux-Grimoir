@@ -1,4 +1,3 @@
-import { readFileSync } from "fs"
 import { RES_MESSAGES } from "../constants.js"
 import jwt from "jsonwebtoken"
 
@@ -10,12 +9,12 @@ export default (req, res, next) => {
     }
 
     try {
-        const secret = readFileSync(process.env.SSH_KEY_PUBLIC) // On vérifie avec la clé publique
+        const secret = process.env.SSH_KEY_PUBLIC
         const token = req.headers.authorization.split(" ")[1]
-        const decodedToken = verify(token, secret)
+        const decodedToken = verify(token, secret) // On vérifie avec la clé publique
         const userId = decodedToken.userId
         req.auth = {
-            userId: userId
+            userId: userId,
         }
 
         next()

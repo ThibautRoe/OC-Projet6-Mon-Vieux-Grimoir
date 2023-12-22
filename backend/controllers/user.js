@@ -1,5 +1,4 @@
 import { hash, compare } from "bcrypt"
-import { readFileSync } from "fs"
 import { RES_MESSAGES } from "../constants.js"
 import User from "../models/user.js"
 import jwt from "jsonwebtoken"
@@ -66,7 +65,7 @@ export async function login(req, res) {
             return res.status(400).json({ message: RES_MESSAGES.INVALID_EMAIL_FORMAT })
         }
 
-        const secret = readFileSync(process.env.SSH_KEY_PRIVATE) // On encode avec la clé privée
+        const secret = process.env.SSH_KEY_PRIVATE
 
         const user = await User.findOne({ email: req.body.email })
 
@@ -82,7 +81,7 @@ export async function login(req, res) {
 
         return res.status(200).json({
             userId: user._id,
-            token: sign({ userId: user._id }, secret, { expiresIn: process.env.JWT_EXPIRE, algorithm: "RS256" }),
+            token: sign({ userId: user._id }, secret, { expiresIn: process.env.JWT_EXPIRE, algorithm: "RS256" }), // On encode avec la clé privée
         })
     } catch (err) {
         res.status(err.status || 500).json({ error: err.message || RES_MESSAGES.UNEXPECTED_ERROR })
