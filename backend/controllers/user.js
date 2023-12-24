@@ -65,7 +65,8 @@ export async function login(req, res) {
             return res.status(400).json({ message: RES_MESSAGES.INVALID_EMAIL_FORMAT })
         }
 
-        const secret = process.env.SSH_KEY_PRIVATE
+        // On récupère la clé privée et on la décode (enregistrée en base64 dans le fichier .env)
+        const secret = Buffer.from(process.env.SSH_KEY_PRIVATE_BASE64, "base64").toString("ascii")
 
         const user = await User.findOne({ email: req.body.email })
 

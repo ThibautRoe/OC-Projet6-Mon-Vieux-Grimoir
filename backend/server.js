@@ -43,16 +43,16 @@ function errorHandler(error, server) {
 }
 
 /**
-* function to start Node.js server 
-* @async
-* @function startServer
-*/
+ * function to start Node.js server
+ * @async
+ * @function startServer
+ */
 async function startServer() {
     try {
         const app = await configureApp()
         app.set("port", port)
         const server = createServer(app)
-        server.on("error", error => errorHandler(error, server))
+        server.on("error", (error) => errorHandler(error, server))
         server.on("listening", () => {
             const address = server.address()
             const bind = typeof address === "string" ? `Pipe ${address}` : `Port ${port}`

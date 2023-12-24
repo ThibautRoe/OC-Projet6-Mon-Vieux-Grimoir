@@ -18,20 +18,26 @@ function requestChecker(req, file) {
     const isBodyEmpty = Object.keys(req.body).length === 0 ? true : false
 
     // On teste d'abord si le corps de la requête est vide, sinon le JSON.parse() posera une erreur
-    if (isBodyEmpty) { response = { status: 400, message: RES_MESSAGES.EMPTY_BODY } }
-    else {
+    if (isBodyEmpty) {
+        response = { status: 400, message: RES_MESSAGES.EMPTY_BODY }
+    } else {
         const book = JSON.parse(req.body.book)
         const isMissingFields = !book.title || !book.author || !book.year || !book.genre
         const isInvalidYear = isNaN(book.year) || book.year.length !== 4 || book.year > new Date().getFullYear()
         const isWrongFileType = !MIME_TYPES[file.mimetype]
 
         // On teste que tous les champs du formulaire soient bien renseignés et que l'image est du bon format
-        if (isMissingFields) { response = { status: 400, message: RES_MESSAGES.MISSING_FIELDS } }
-        else if (isInvalidYear) { response = { status: 400, message: RES_MESSAGES.INVALID_YEAR } }
-        else if (isWrongFileType) { response = { status: 400, message: RES_MESSAGES.INVALID_FILETYPE } }
-        else if (book.ratings && book.averageRating) {
+        if (isMissingFields) {
+            response = { status: 400, message: RES_MESSAGES.MISSING_FIELDS }
+        } else if (isInvalidYear) {
+            response = { status: 400, message: RES_MESSAGES.INVALID_YEAR }
+        } else if (isWrongFileType) {
+            response = { status: 400, message: RES_MESSAGES.INVALID_FILETYPE }
+        } else if (book.ratings && book.averageRating) {
             const isWrongRating = book.ratings[0].grade < 0 || book.ratings[0].grade > 5 || book.averageRating < 0 || book.averageRating > 5
-            if (isWrongRating) { response = { status: 400, message: RES_MESSAGES.INVALID_RATING } }
+            if (isWrongRating) {
+                response = { status: 400, message: RES_MESSAGES.INVALID_RATING }
+            }
         }
     }
 
@@ -47,11 +53,11 @@ const storage = diskStorage({
     filename: (req, file, callback) => {
         const book = JSON.parse(req.body.book)
         // On génère un nom de fichier basé sur l'auteur, le titre et l'année, sans espaces et en minuscules
-        const name = (`${book.author}_${book.title}_${book.year}_`).toLowerCase().split(" ").join("-")
+        const name = `${book.author}_${book.title}_${book.year}_`.toLowerCase().split(" ").join("-")
         const extension = MIME_TYPES[file.mimetype]
         const fileName = name + Date.now() + "." + extension
         callback(null, fileName)
-    }
+    },
 })
 
 /**
@@ -76,7 +82,9 @@ function fileFilter(req, file, callback) {
 const multerMiddleware = multer({ storage, fileFilter }).single("image") // .single("image") = un seul fichier à la fois, venant du champ "image" du formulaire
 
 export default (req, res, next) => {
-    if (req.skipImageProcessing) { return next() }
+    if (req.skipImageProcessing) {
+        return next()
+    }
 
     try {
         // On initialise response comme ça car s'il n'y a pas d'image dans la requête, fileFilter() (et donc requestChecker()) n'est pas du tout
@@ -87,9 +95,13 @@ export default (req, res, next) => {
         multerMiddleware(req, res, async () => {
             const isBodyEmpty = Object.keys(req.body).length === 0 ? true : false
 
-            if (isBodyEmpty) { return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY }) }
+            if (isBodyEmpty) {
+                return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY })
+            }
 
-            if (response.status) { return res.status(response.status).json({ message: response.message }) }
+            if (response.status) {
+                return res.status(response.status).json({ message: response.message })
+            }
 
             next()
         })

@@ -14,7 +14,9 @@ export async function getAllBooks(req, res) {
     try {
         const books = await Book.find()
 
-        if (!books.length) { return res.status(404).json({ message: RES_MESSAGES.NO_BOOKS_IN_DB }) }
+        if (!books.length) {
+            return res.status(404).json({ message: RES_MESSAGES.NO_BOOKS_IN_DB })
+        }
 
         return res.status(200).json(books)
     } catch (err) {
@@ -34,7 +36,9 @@ export async function getOneBook(req, res) {
     try {
         const book = await Book.findOne({ _id: req.params.id })
 
-        if (!book) { return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST }) }
+        if (!book) {
+            return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST })
+        }
 
         return res.status(200).json(book)
     } catch (err) {
@@ -58,7 +62,9 @@ export async function getBestRating(req, res) {
     try {
         const books = await Book.find()
 
-        if (!books.length) { return res.status(404).json({ message: RES_MESSAGES.NO_BOOKS_IN_DB }) }
+        if (!books.length) {
+            return res.status(404).json({ message: RES_MESSAGES.NO_BOOKS_IN_DB })
+        }
 
         const sortedBooks = books.sort((a, b) => {
             if (b.averageRating !== a.averageRating) {
@@ -90,7 +96,13 @@ export async function createBook(req, res) {
         bookObject.userId = req.auth.userId
         bookObject.ratings[0].userId = req.auth.userId
         bookObject.year = Number(bookObject.year) // La date reçue est en string, la DB attend un number
-        bookObject.imageUrl = `${req.protocol}://${req.get("host")}/${req.file.path}`
+
+        // Pour prendre en compte le cas de figure ou le backend tourne sur Vercel plutôt qu'en local et qu'on envoie les images sur Cloudinary
+        if (process.env.ENV === "vercel") {
+            bookObject.imageUrl = req.file.path
+        } else {
+            bookObject.imageUrl = `${req.protocol}://${req.get("host")}/${req.file.path}`
+        }
 
         const book = new Book({ ...bookObject })
 
@@ -117,7 +129,9 @@ export async function modifyBook(req, res) {
         // -A récupérer l'URL de l'image actuelle si on ne la modifie pas (il faut quand même qu'on la fournisse car c'est un champ requis du model Book)
         let bookToUpdate = await Book.findOne({ _id: req.params.id })
 
-        if (!bookToUpdate) { return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST }) }
+        if (!bookToUpdate) {
+            return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST })
+        }
 
         let updatedBook = req.file ? JSON.parse(req.body.book) : { ...req.body }
         // On actualise le userId pour mettre celui du token JWT pour s'assurer de l'identité de l'utilisateur
@@ -127,29 +141,40 @@ export async function modifyBook(req, res) {
         const hasNewImage = req.file
 
         if (!isUserAuthorized) {
-            if (hasNewImage) {
+            if (hasNewImage && process.env.ENV !== "vercel") {
+                // On supprime image uniquement si on est en local
                 unlinkSync(req.file.path)
             }
             return res.status(403).json({ message: RES_MESSAGES.UNAUTHORIZED })
         }
 
         updatedBook.year = Number(updatedBook.year) // La date reçue est en string, la DB attend un number
+
+        let newImageUrl = ""
+        // Pour prendre en compte le cas de figure ou le backend tourne sur Vercel plutôt qu'en local et qu'on envoie les images sur Cloudinary
+        if (process.env.ENV === "vercel") {
+            newImageUrl = req.file.path
+        } else {
+            newImageUrl = `${req.protocol}://${req.get("host")}/${req.file.path}`
+        }
         // S'il y a une nouvelle image, on prend l'URL de la nouvelle image, sinon on prend l'URL de l'image actuelle
-        updatedBook.imageUrl = req.file ? `${req.protocol}://${req.get("host")}/${req.file.path}` : bookToUpdate.imageUrl
+        updatedBook.imageUrl = req.file ? newImageUrl : bookToUpdate.imageUrl
 
         const result = await Book.updateOne({ _id: req.params.id }, { ...updatedBook })
         const modificationIsSuccessful = result.modifiedCount === 1 ? true : false
 
         if (modificationIsSuccessful) {
             // On supprime l'ancienne image uniquement si la modification a réussi et s'il y avait une nouvelle image
-            if (req.file) {
+            if (req.file && process.env.ENV !== "vercel") {
+                // On supprime l'ancienne image uniquement si on est en local
                 unlinkSync(bookToUpdate.imageUrl.replace(`${req.protocol}://${req.get("host")}/`, ""))
             }
             // Amélioration possible : on pourrait renommer l'ancien fichier pour refléter les nouvelles infos du livre
             return res.status(200).json({ message: RES_MESSAGES.BOOK_MODIFIED })
         }
 
-        if (hasNewImage) {
+        if (hasNewImage && process.env.ENV !== "vercel") {
+            // On supprime l'ancienne image uniquement si on est en local
             unlinkSync(req.file.path)
         }
 
@@ -175,17 +200,24 @@ export async function deleteBook(req, res) {
     try {
         const bookToDelete = await Book.findOne({ _id: req.params.id })
 
-        if (!bookToDelete) { return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST }) }
+        if (!bookToDelete) {
+            return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST })
+        }
 
         const isUserAuthorized = bookToDelete.userId === req.auth.userId
 
-        if (!isUserAuthorized) { return res.status(403).json({ message: RES_MESSAGES.UNAUTHORIZED }) }
+        if (!isUserAuthorized) {
+            return res.status(403).json({ message: RES_MESSAGES.UNAUTHORIZED })
+        }
 
         const result = await bookToDelete.deleteOne()
         const deletionIsSuccessful = result.deletedCount === 1 ? true : false
 
         if (deletionIsSuccessful) {
-            unlinkSync(bookToDelete.imageUrl.replace(`${req.protocol}://${req.get("host")}/`, ""))
+            if (process.env.ENV !== "vercel") {
+                // On supprime l'image uniquement si on est en local
+                unlinkSync(bookToDelete.imageUrl.replace(`${req.protocol}://${req.get("host")}/`, ""))
+            }
             return res.status(200).json({ message: RES_MESSAGES.BOOK_DELETED })
         }
 
@@ -211,15 +243,21 @@ export async function rateBook(req, res) {
     try {
         const isBodyEmpty = Object.keys(req.body).length === 0 ? true : false
 
-        if (isBodyEmpty) { return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY }) }
+        if (isBodyEmpty) {
+            return res.status(400).json({ message: RES_MESSAGES.EMPTY_BODY })
+        }
 
         let newRating = { ...req.body }
 
-        if (newRating.rating < 0 || newRating.rating > 5) { return res.status(400).json({ message: RES_MESSAGES.INVALID_RATING }) }
+        if (newRating.rating < 0 || newRating.rating > 5) {
+            return res.status(400).json({ message: RES_MESSAGES.INVALID_RATING })
+        }
 
         let bookToRate = await Book.findOne({ _id: req.params.id })
 
-        if (!bookToRate) { return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST }) }
+        if (!bookToRate) {
+            return res.status(404).json({ message: RES_MESSAGES.BOOK_DOES_NOT_EXIST })
+        }
 
         // On actualise le userId pour mettre celui du token JWT pour s'assurer de l'identité de l'utilisateur
         newRating.userId = req.auth.userId
@@ -228,9 +266,11 @@ export async function rateBook(req, res) {
         delete newRating.rating
 
         // On check si l'utilisateur a déjà déposé une note
-        const hasUserAlreadyRated = bookToRate.ratings.some(item => item.userId === newRating.userId);
+        const hasUserAlreadyRated = bookToRate.ratings.some((item) => item.userId === newRating.userId)
 
-        if (hasUserAlreadyRated) { return res.status(400).json({ message: RES_MESSAGES.ALREADY_RATED }) }
+        if (hasUserAlreadyRated) {
+            return res.status(400).json({ message: RES_MESSAGES.ALREADY_RATED })
+        }
 
         // Calcul de la nouvelle note moyenne
         bookToRate.ratings.push(newRating)

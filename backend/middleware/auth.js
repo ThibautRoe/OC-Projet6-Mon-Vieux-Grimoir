@@ -9,7 +9,8 @@ export default (req, res, next) => {
     }
 
     try {
-        const secret = process.env.SSH_KEY_PUBLIC
+        // On récupère la clé publique et on la décode (enregistrée en base64 dans le fichier .env)
+        const secret = Buffer.from(process.env.SSH_KEY_PUBLIC_BASE64, "base64").toString("ascii")
         const token = req.headers.authorization.split(" ")[1]
         const decodedToken = verify(token, secret) // On vérifie avec la clé publique
         const userId = decodedToken.userId
