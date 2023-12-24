@@ -150,15 +150,17 @@ export async function modifyBook(req, res) {
 
         updatedBook.year = Number(updatedBook.year) // La date reçue est en string, la DB attend un number
 
-        let newImageUrl = ""
-        // Pour prendre en compte le cas de figure ou le backend tourne sur Vercel plutôt qu'en local et qu'on envoie les images sur Cloudinary
-        if (process.env.ENV === "vercel") {
-            newImageUrl = req.file.path
-        } else {
-            newImageUrl = `${req.protocol}://${req.get("host")}/${req.file.path}`
-        }
         // S'il y a une nouvelle image, on prend l'URL de la nouvelle image, sinon on prend l'URL de l'image actuelle
-        updatedBook.imageUrl = req.file ? newImageUrl : bookToUpdate.imageUrl
+        if (!req.file) {
+            updatedBook.imageUrl = bookToUpdate.imageUrl
+        } else {
+            // Pour prendre en compte le cas de figure ou le backend tourne sur Vercel plutôt qu'en local et qu'on envoie les images sur Cloudinary
+            if (process.env.ENV === "vercel") {
+                updatedBook.imageUrl = req.file.path
+            } else {
+                updatedBook.imageUrl = `${req.protocol}://${req.get("host")}/${req.file.path}`
+            }
+        }
 
         const result = await Book.updateOne({ _id: req.params.id }, { ...updatedBook })
         const modificationIsSuccessful = result.modifiedCount === 1 ? true : false
