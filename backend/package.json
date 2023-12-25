@@ -24,12 +24,12 @@
         "express-rate-limit": "^7.1.5",
         "helmet": "^7.1.0",
         "jsonwebtoken": "^9.0.2",
-        "mongoose": "^8.0.1",
+        "mongoose": "^8.0.3",
         "mongoose-unique-validator": "^4.0.0",
         "multer": "^1.4.5-lts.1",
         "multer-storage-cloudinary": "^4.0.0",
         "serverless-http": "^3.2.0",
-        "sharp": "^0.32.6",
+        "sharp": "^0.33.1",
         "validator": "^13.11.0"
     },
     "overrides": {
@@ -38,7 +38,6 @@
         }
     },
     "devDependencies": {
-        "eslint": "^8.54.0",
-        "nodemon": "^3.0.1"
+        "eslint": "^8.56.0"
     }
 }
