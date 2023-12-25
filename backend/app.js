@@ -52,7 +52,7 @@ export default async function configureApp(swaggerJson) {
 
         app.use(globalLimiter)
 
-        app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+        app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
         app.use("/api/auth", authLimiter1, authLimiter2, userRoutes)
         app.use("/api/books", booksLimiter, bookRoutes)
         app.use("/images", express.static(path.join(dirPath, "images")))
