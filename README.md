@@ -2,18 +2,23 @@
 
 Project #7 of OpenClassrooms certification / Fullstack Web Developer
 
+## Preview
+
+-   Hosted back-end (fully functional, DB is restored to initial state on a regular basis for security reasons) + OpenAPI / Swagger documentation: https://oc-7-mon-vieux-grimoire-back-end.vercel.app/
+-   Hosted front-end: https://oc-7-mon-vieux-grimoire.vercel.app/
+
 ## Technologies
 
--   Express.js
--   MongoDB Atlas
+-   [Express.js](https://expressjs.com/)
+-   [MongoDB Atlas](https://www.mongodb.com/atlas/database)
+-   [Cloudinary](https://cloudinary.com/) (for images hosting for back-end hosted on Vercel only, images are stored locally when back-end runs on localhost)
 
 ## Back-end
 
 ### ⚠️ Important Notes
 
-This project's backend has a .env file and a .certs folder\
-They are needed for the backend to work\
-They are not hosted on this Github repo, please get in touch with the author in order to get them
+This project's backend needs a .env file to work properly on local\
+It is are not hosted on this Github repo, please get in touch with the author in order to get them
 
 ### 🛠️ Install Dependencies
 
@@ -31,6 +36,10 @@ npm run debug     # To start with debugger
 ```
 
 _Tested with Node.js 20.9.0 and NPM 10.1.0_
+
+### 🕮 Postman collection
+
+https://github.com/ThibautRoe/OC-Projet7-Mon-Vieux-Grimoire/blob/main/backend/postman.postman_collection.json
 
 ## Front-end
 
