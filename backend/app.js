@@ -20,11 +20,11 @@ if (process.env.ENV !== "vercel") {
     swaggerPath = path.join(dirPath, "./swagger.json")
     swaggerDocument = JSON.parse(readFileSync(swaggerPath))
 } else {
-    // Obligé de faire comme pour Vercel sinon ça ne fonctionne pas
+    // Obligé de faire comme ça pour Vercel sinon ça ne fonctionne pas
     swaggerCustom = {
         customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css",
         swaggerOptions: {
-            url: "https://raw.githubusercontent.com/ThibautRoe/OC-Projet7-Mon-Vieux-Grimoire/main/backend/swagger.json",
+            url: "https://oc-7-mon-vieux-grimoire-back-end.vercel.app/swagger.json",
         },
     }
 }
