@@ -3,9 +3,14 @@ import helmet from "helmet"
 import swaggerUi from "swagger-ui-express"
 import { connect } from "mongoose"
 import * as path from "path"
+import { fileURLToPath } from "url"
+import { readFileSync } from "fs"
 import { globalLimiter, authLimiter1, authLimiter2, booksLimiter } from "./middleware/limiter.js"
 import userRoutes from "./routes/user.js"
 import bookRoutes from "./routes/book.js"
+
+const fileName = fileURLToPath(import.meta.url)
+const dirPath = path.dirname(fileName)
 
 /**
  * Function to configure Express app
@@ -14,13 +19,21 @@ import bookRoutes from "./routes/book.js"
  * @returns {object} - Express app
  * @throws {Error}
  */
-export default async function configureApp(dirPath, swaggerDocument) {
+export default async function configureApp(swaggerJson) {
     if (!process.env.DB_USER || !process.env.DB_PASS || !process.env.DB_HOST) {
         console.error("Les variables d'environnement DB_USER, DB_PASS et DB_HOST doivent être définies.")
         process.exit(1)
     }
 
     try {
+        let swaggerPath
+        let swaggerDocument
+
+        if (process.env.ENV !== "vercel") {
+            swaggerPath = path.join(dirPath, "./swagger.json")
+            swaggerDocument = JSON.parse(readFileSync(swaggerPath))
+        } else swaggerDocument = swaggerJson
+
         await connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`)
         console.log("Connexion à MongoDB réussie !")
 
