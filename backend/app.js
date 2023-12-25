@@ -12,6 +12,23 @@ import bookRoutes from "./routes/book.js"
 const fileName = fileURLToPath(import.meta.url)
 const dirPath = path.dirname(fileName)
 
+let swaggerPath
+let swaggerDocument
+let swaggerCustom
+
+if (process.env.ENV !== "vercel") {
+    swaggerPath = path.join(dirPath, "./swagger.json")
+    swaggerDocument = JSON.parse(readFileSync(swaggerPath))
+} else {
+    // Obligé de faire comme pour Vercel sinon ça ne fonctionne pas
+    swaggerCustom = {
+        customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css",
+        swaggerOptions: {
+            url: "https://raw.githubusercontent.com/ThibautRoe/OC-Projet7-Mon-Vieux-Grimoire/main/backend/swagger.json",
+        },
+    }
+}
+
 /**
  * Function to configure Express app
  * @async
@@ -19,21 +36,13 @@ const dirPath = path.dirname(fileName)
  * @returns {object} - Express app
  * @throws {Error}
  */
-export default async function configureApp(swaggerJson) {
+export default async function configureApp() {
     if (!process.env.DB_USER || !process.env.DB_PASS || !process.env.DB_HOST) {
         console.error("Les variables d'environnement DB_USER, DB_PASS et DB_HOST doivent être définies.")
         process.exit(1)
     }
 
     try {
-        let swaggerPath
-        let swaggerDocument
-
-        if (process.env.ENV !== "vercel") {
-            swaggerPath = path.join(dirPath, "./swagger.json")
-            swaggerDocument = JSON.parse(readFileSync(swaggerPath))
-        } else swaggerDocument = swaggerJson
-
         await connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`)
         console.log("Connexion à MongoDB réussie !")
 
@@ -52,7 +61,12 @@ export default async function configureApp(swaggerJson) {
 
         app.use(globalLimiter)
 
-        app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+        if (process.env.ENV !== "vercel") {
+            app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+        } else {
+            app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerCustom))
+        }
+
         app.use("/api/auth", authLimiter1, authLimiter2, userRoutes)
         app.use("/api/books", booksLimiter, bookRoutes)
         app.use("/images", express.static(path.join(dirPath, "images")))
