@@ -1,0 +1,351 @@
+{
+	"info": {
+		"_postman_id": "1034da21-dd0f-43c9-b79b-663304333512",
+		"name": "Mon Vieux Grimoire",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31367569"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "signup - POST /api/auth/signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"bob3@bob.fr\",\n    \"password\": \"MonSuperMotDePasse1!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/auth/signup",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login - POST /api/auth/login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"bob2@bob.fr\",\n    \"password\": \"MonSuperMotDePasse1!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/auth/login",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "getAllBooks - GET /api/books/",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/books/",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOneBook - GET /api/books/:id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/books/657eceaf082bb3a3f8aa1472",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"657eceaf082bb3a3f8aa1472"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBestRating - GET /api/books/bestrating",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/books/bestrating",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"bestrating"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createBook - POST /api/books (auth)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "book",
+									"value": "{\"userId\":\"bob\",\"title\":\"titre\",\"author\":\"auteur\",\"year\":\"1999\",\"genre\":\"genre\",\"ratings\":[{\"userId\":\"bob\",\"grade\":4}],\"averageRating\":4}",
+									"description": "OK",
+									"type": "default"
+								},
+								{
+									"key": "book",
+									"value": "{\"userId\":\"bob\",\"title\":\"\",\"author\":\"auteur\",\"year\":\"1999\",\"genre\":\"genre\",\"ratings\":[{\"userId\":\"bob\",\"grade\":4}],\"averageRating\":4}",
+									"description": "empty field",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "book",
+									"value": "{\"userId\":\"bob\",\"title\":\"titre\",\"author\":\"auteur\",\"year\":\"cc\",\"genre\":\"genre\",\"ratings\":[{\"userId\":\"bob\",\"grade\":4}],\"averageRating\":44",
+									"description": "wrong year: letters instead of numbers",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "book",
+									"value": "{\"userId\":\"bob\",\"title\":\"titre\",\"author\":\"auteur\",\"year\":\"199\",\"genre\":\"genre\",\"ratings\":[{\"userId\":\"bob\",\"grade\":4}],\"averageRating\":4}",
+									"description": "wrong year: 3 numbers intead of 4",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "book",
+									"value": "{\"userId\":\"bob\",\"title\":\"titre\",\"author\":\"auteur\",\"year\":\"2024\",\"genre\":\"genre\",\"ratings\":[{\"userId\":\"bob\",\"grade\":4}],\"averageRating\":4}",
+									"description": "year > 2023",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "book",
+									"value": "{\"userId\":\"bob\",\"title\":\"titre\",\"author\":\"auteur\",\"year\":\"1999\",\"genre\":\"genre\",\"ratings\":[{\"userId\":\"bob\",\"grade\":6}],\"averageRating\":6}",
+									"description": "wrong rating",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"description": "OK",
+									"type": "file",
+									"src": "test-images/book-cover.jpg"
+								},
+								{
+									"key": "image",
+									"description": "wrong format",
+									"type": "file",
+									"src": "test-images/book-cover.gif",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/books/",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modifyBook - PUT /api/books/:id (auth)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "book",
+									"value": "{ \"userId\":\"bob\", \"title\":\"titre newww\", \"author\":\"auteur new\", \"year\":\"2000\", \"genre\":\"genre neww\" }",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "test-images/book-cover.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/books/656902c636812b501b95a697",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"656902c636812b501b95a697"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteBook - DELETE /api/books/:id (auth)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/books/6569021736812b501b95a62c",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"6569021736812b501b95a62c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rateBook - POST /api/books/:id/rating (auth)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"bob\",\n    \"rating\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/books/6568725316814018dadebf00/rating",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"6568725316814018dadebf00",
+								"rating"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{JWT}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "localhost:4000",
+			"type": "string"
+		}
+	]
+}

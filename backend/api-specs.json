@@ -1,30 +1,38 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.1.0",
     "info": {
         "title": "API Mon Vieux Grimoire",
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "https://oc-7-mon-vieux-grimoire-back-end.vercel.app"
+        }
+    ],
+    "tags": [
+        {
+            "name": "user",
+            "description": "User operations"
+        },
+        {
+            "name": "book",
+            "description": "Books operations"
+        }
+    ],
     "paths": {
         "/api/auth/signup": {
             "post": {
+                "tags": ["user"],
                 "summary": "User Signup",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["email", "password"]
+                                "$ref": "#/components/schemas/User"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "201": {
@@ -36,10 +44,9 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "description": "User created successfully"
+                                            "example": "User created successfully"
                                         }
-                                    },
-                                    "required": ["message"]
+                                    }
                                 }
                             }
                         }
@@ -49,24 +56,17 @@
         },
         "/api/auth/login": {
             "post": {
+                "tags": ["user"],
                 "summary": "User Login",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["email", "password"]
+                                "$ref": "#/components/schemas/User"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "200": {
@@ -77,13 +77,14 @@
                                     "type": "object",
                                     "properties": {
                                         "userId": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "654321"
                                         },
                                         "token": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                                         }
-                                    },
-                                    "required": ["userId", "token"]
+                                    }
                                 }
                             }
                         }
@@ -93,6 +94,7 @@
         },
         "/api/books": {
             "get": {
+                "tags": ["book"],
                 "summary": "Get All Books",
                 "responses": {
                     "200": {
@@ -101,7 +103,9 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {}
+                                    "items": {
+                                        "$ref": "#/components/schemas/Book_response"
+                                    }
                                 }
                             }
                         }
@@ -109,6 +113,7 @@
                 }
             },
             "post": {
+                "tags": ["book"],
                 "summary": "Create Book",
                 "security": [{ "bearerAuth": [] }],
                 "requestBody": {
@@ -118,7 +123,8 @@
                                 "type": "object",
                                 "properties": {
                                     "book": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
                                     },
                                     "image": {
                                         "type": "string",
@@ -127,7 +133,8 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "201": {
@@ -139,10 +146,9 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "description": "Book created successfully"
+                                            "example": "Book created successfully"
                                         }
-                                    },
-                                    "required": ["message"]
+                                    }
                                 }
                             }
                         }
@@ -152,6 +158,7 @@
         },
         "/api/books/{id}": {
             "get": {
+                "tags": ["book"],
                 "summary": "Get Single Book",
                 "parameters": [
                     {
@@ -168,13 +175,16 @@
                         "description": "Single book details",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book_response"
+                                }
                             }
                         }
                     }
                 }
             },
             "put": {
+                "tags": ["book"],
                 "summary": "Update Book",
                 "security": [{ "bearerAuth": [] }],
                 "parameters": [
@@ -189,39 +199,28 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "oneOf": [
-                            {
-                                "multipart/form-data": {
-                                    "schema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "book": {
-                                                "type": "string"
-                                            },
-                                            "image": {
-                                                "type": "string",
-                                                "format": "binary"
-                                            }
-                                        },
-                                        "required": ["book", "image"]
-                                    }
-                                }
-                            },
-                            {
-                                "application/json": {
-                                    "schema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "book": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "required": ["book"]
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "book": {
+                                        "type": "string",
+                                        "example": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 }
                             }
-                        ]
-                    }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Book_JSON"
+                            }
+                        }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "200": {
@@ -233,10 +232,9 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "description": "Book modified successfully"
+                                            "example": "Book modified successfully"
                                         }
-                                    },
-                                    "required": ["message"]
+                                    }
                                 }
                             }
                         }
@@ -244,6 +242,7 @@
                 }
             },
             "delete": {
+                "tags": ["book"],
                 "summary": "Delete Book",
                 "security": [{ "bearerAuth": [] }],
                 "parameters": [
@@ -266,10 +265,9 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "description": "Book deleted successfully"
+                                            "example": "Book deleted successfully"
                                         }
-                                    },
-                                    "required": ["message"]
+                                    }
                                 }
                             }
                         }
@@ -279,6 +277,7 @@
         },
         "/api/books/bestrating": {
             "get": {
+                "tags": ["book"],
                 "summary": "Get Best Rating Books",
                 "responses": {
                     "200": {
@@ -287,7 +286,9 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {}
+                                    "items": {
+                                        "$ref": "#/components/schemas/Book_response"
+                                    }
                                 }
                             }
                         }
@@ -297,6 +298,7 @@
         },
         "/api/books/{id}/rating": {
             "post": {
+                "tags": ["book"],
                 "summary": "Set Book Rating",
                 "security": [{ "bearerAuth": [] }],
                 "parameters": [
@@ -313,21 +315,11 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "userId": {
-                                        "type": "string"
-                                    },
-                                    "rating": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "maximum": 5
-                                    }
-                                },
-                                "required": ["userId", "rating"]
+                                "$ref": "#/components/schemas/Book_set_rating"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "200": {
@@ -335,9 +327,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {},
-                                    "required": []
+                                    "$ref": "#/components/schemas/Book_response"
                                 }
                             }
                         }
@@ -347,16 +337,127 @@
         }
     },
     "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "email@domain.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "MyStrongPassword1!"
+                    }
+                }
+            },
+            "Book_JSON": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string",
+                        "example": "654321"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Book title"
+                    },
+                    "author": {
+                        "type": "string",
+                        "example": "Book author"
+                    },
+                    "year": {
+                        "type": "number",
+                        "example": 1999
+                    },
+                    "genre": {
+                        "type": "string",
+                        "example": "Book genre"
+                    }
+                }
+            },
+            "Book_set_rating": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string",
+                        "example": "654321"
+                    },
+                    "rating": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 5,
+                        "example": 5
+                    }
+                }
+            },
+            "Book_response": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "example": "654321"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "example": "654321"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Book title"
+                    },
+                    "author": {
+                        "type": "string",
+                        "example": "Book author"
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "example": "https://url.com/image.png"
+                    },
+                    "year": {
+                        "type": "number",
+                        "example": 1999
+                    },
+                    "genre": {
+                        "type": "string",
+                        "example": "Book genre"
+                    },
+                    "ratings": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "userId": {
+                                    "type": "string",
+                                    "example": "654321"
+                                },
+                                "grade": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 5,
+                                    "example": 5
+                                },
+                                "_id": {
+                                    "type": "string",
+                                    "example": "654321"
+                                }
+                            }
+                        }
+                    },
+                    "averageRating": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 5,
+                        "example": 5
+                    }
+                }
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
                 "scheme": "bearer"
             }
         }
-    },
-    "security": [
-        {
-            "bearerAuth": []
-        }
-    ]
+    }
 }
