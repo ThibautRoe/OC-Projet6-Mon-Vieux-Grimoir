@@ -8,10 +8,12 @@ import { readFileSync } from "fs"
 import { globalLimiter, authLimiter1, authLimiter2, booksLimiter } from "./middleware/limiter.js"
 import userRoutes from "./routes/user.js"
 import bookRoutes from "./routes/book.js"
-// import swaggerDocument from "./swagger.json" assert { type: "json" }
 
 const fileName = fileURLToPath(import.meta.url)
 const dirPath = path.dirname(fileName)
+
+const swaggerPath = path.join(dirPath, "./swagger.json")
+const swaggerDocument = JSON.parse(readFileSync(swaggerPath))
 
 /**
  * Function to configure Express app
@@ -45,7 +47,7 @@ export default async function configureApp() {
 
         app.use(globalLimiter)
 
-        // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+        app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
         app.use("/api/auth", authLimiter1, authLimiter2, userRoutes)
         app.use("/api/books", booksLimiter, bookRoutes)
         app.use("/images", express.static(path.join(dirPath, "images")))
