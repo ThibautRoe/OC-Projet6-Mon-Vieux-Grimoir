@@ -7,6 +7,9 @@
     "servers": [
         {
             "url": "https://oc-7-mon-vieux-grimoire-back-end.vercel.app"
+        },
+        {
+            "url": "http://localhost:4000"
         }
     ],
     "tags": [
@@ -44,7 +47,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "User created successfully"
+                                            "examples": "User created successfully"
                                         }
                                     }
                                 }
@@ -78,11 +81,11 @@
                                     "properties": {
                                         "userId": {
                                             "type": "string",
-                                            "example": "654321"
+                                            "examples": "654321"
                                         },
                                         "token": {
                                             "type": "string",
-                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                                            "examples": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                                         }
                                     }
                                 }
@@ -124,7 +127,7 @@
                                 "properties": {
                                     "book": {
                                         "type": "string",
-                                        "example": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
+                                        "examples": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
                                     },
                                     "image": {
                                         "type": "string",
@@ -146,7 +149,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Book created successfully"
+                                            "examples": "Book created successfully"
                                         }
                                     }
                                 }
@@ -205,7 +208,7 @@
                                 "properties": {
                                     "book": {
                                         "type": "string",
-                                        "example": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
+                                        "examples": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
                                     },
                                     "image": {
                                         "type": "string",
@@ -232,7 +235,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Book modified successfully"
+                                            "examples": "Book modified successfully"
                                         }
                                     }
                                 }
@@ -265,7 +268,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Book deleted successfully"
+                                            "examples": "Book deleted successfully"
                                         }
                                     }
                                 }
@@ -343,11 +346,11 @@
                 "properties": {
                     "email": {
                         "type": "string",
-                        "example": "email@domain.com"
+                        "examples": "email@domain.com"
                     },
                     "password": {
                         "type": "string",
-                        "example": "MyStrongPassword1!"
+                        "examples": "MyStrongPassword1!"
                     }
                 }
             },
@@ -356,23 +359,23 @@
                 "properties": {
                     "userId": {
                         "type": "string",
-                        "example": "654321"
+                        "examples": "654321"
                     },
                     "title": {
                         "type": "string",
-                        "example": "Book title"
+                        "examples": "Book title"
                     },
                     "author": {
                         "type": "string",
-                        "example": "Book author"
+                        "examples": "Book author"
                     },
                     "year": {
                         "type": "number",
-                        "example": 1999
+                        "examples": 1999
                     },
                     "genre": {
                         "type": "string",
-                        "example": "Book genre"
+                        "examples": "Book genre"
                     }
                 }
             },
@@ -381,13 +384,13 @@
                 "properties": {
                     "userId": {
                         "type": "string",
-                        "example": "654321"
+                        "examples": "654321"
                     },
                     "rating": {
                         "type": "number",
                         "minimum": 0,
                         "maximum": 5,
-                        "example": 5
+                        "examples": 5
                     }
                 }
             },
@@ -396,31 +399,31 @@
                 "properties": {
                     "_id": {
                         "type": "string",
-                        "example": "654321"
+                        "examples": "654321"
                     },
                     "userId": {
                         "type": "string",
-                        "example": "654321"
+                        "examples": "654321"
                     },
                     "title": {
                         "type": "string",
-                        "example": "Book title"
+                        "examples": "Book title"
                     },
                     "author": {
                         "type": "string",
-                        "example": "Book author"
+                        "examples": "Book author"
                     },
                     "imageUrl": {
                         "type": "string",
-                        "example": "https://url.com/image.png"
+                        "examples": "https://url.com/image.png"
                     },
                     "year": {
                         "type": "number",
-                        "example": 1999
+                        "examples": 1999
                     },
                     "genre": {
                         "type": "string",
-                        "example": "Book genre"
+                        "examples": "Book genre"
                     },
                     "ratings": {
                         "type": "array",
@@ -429,17 +432,17 @@
                             "properties": {
                                 "userId": {
                                     "type": "string",
-                                    "example": "654321"
+                                    "examples": "654321"
                                 },
                                 "grade": {
                                     "type": "number",
                                     "minimum": 0,
                                     "maximum": 5,
-                                    "example": 5
+                                    "examples": 5
                                 },
                                 "_id": {
                                     "type": "string",
-                                    "example": "654321"
+                                    "examples": "654321"
                                 }
                             }
                         }
@@ -448,7 +451,7 @@
                         "type": "number",
                         "minimum": 0,
                         "maximum": 5,
-                        "example": 5
+                        "examples": 5
                     }
                 }
             }
