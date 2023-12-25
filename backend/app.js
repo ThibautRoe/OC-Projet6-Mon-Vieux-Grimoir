@@ -3,17 +3,9 @@ import helmet from "helmet"
 import swaggerUi from "swagger-ui-express"
 import { connect } from "mongoose"
 import * as path from "path"
-import { fileURLToPath } from "url"
-import { readFileSync } from "fs"
 import { globalLimiter, authLimiter1, authLimiter2, booksLimiter } from "./middleware/limiter.js"
 import userRoutes from "./routes/user.js"
 import bookRoutes from "./routes/book.js"
-
-const fileName = fileURLToPath(import.meta.url)
-const dirPath = path.dirname(fileName)
-
-const swaggerPath = path.join(dirPath, "./swagger.json")
-const swaggerDocument = JSON.parse(readFileSync(swaggerPath))
 
 /**
  * Function to configure Express app
@@ -22,7 +14,7 @@ const swaggerDocument = JSON.parse(readFileSync(swaggerPath))
  * @returns {object} - Express app
  * @throws {Error}
  */
-export default async function configureApp() {
+export default async function configureApp(dirPath, swaggerDocument) {
     if (!process.env.DB_USER || !process.env.DB_PASS || !process.env.DB_HOST) {
         console.error("Les variables d'environnement DB_USER, DB_PASS et DB_HOST doivent être définies.")
         process.exit(1)

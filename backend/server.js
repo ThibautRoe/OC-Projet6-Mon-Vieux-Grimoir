@@ -1,3 +1,6 @@
+import * as path from "path"
+import { fileURLToPath } from "url"
+import { readFileSync } from "fs"
 import { createServer } from "http"
 import configureApp from "./app.js"
 
@@ -48,8 +51,13 @@ function errorHandler(error, server) {
  * @function startServer
  */
 async function startServer() {
+    const fileName = fileURLToPath(import.meta.url)
+    const dirPath = path.dirname(fileName)
+    const swaggerPath = path.join(dirPath, "./swagger.json")
+    const swaggerDocument = JSON.parse(readFileSync(swaggerPath))
+
     try {
-        const app = await configureApp()
+        const app = await configureApp(dirPath, swaggerDocument)
         app.set("port", port)
         const server = createServer(app)
         server.on("error", (error) => errorHandler(error, server))
