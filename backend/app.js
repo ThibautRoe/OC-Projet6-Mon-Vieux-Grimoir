@@ -9,7 +9,7 @@ import { globalLimiter, authLimiter1, authLimiter2, booksLimiter } from "./middl
 import userRoutes from "./routes/user.js"
 import bookRoutes from "./routes/book.js"
 
-const swaggerDocument = JSON.parse(readFileSync(`${path.resolve()}/swagger.json`))
+const swaggerDocument = JSON.parse(readFileSync("./swagger.json"))
 
 const fileName = fileURLToPath(import.meta.url)
 const dirPath = path.dirname(fileName)
