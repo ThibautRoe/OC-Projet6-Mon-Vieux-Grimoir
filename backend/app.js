@@ -8,8 +8,7 @@ import { readFileSync } from "fs"
 import { globalLimiter, authLimiter1, authLimiter2, booksLimiter } from "./middleware/limiter.js"
 import userRoutes from "./routes/user.js"
 import bookRoutes from "./routes/book.js"
-
-const swaggerDocument = JSON.parse(readFileSync("./swagger.json"))
+import swaggerDocument from "./swagger.json" assert { type: "json" }
 
 const fileName = fileURLToPath(import.meta.url)
 const dirPath = path.dirname(fileName)
