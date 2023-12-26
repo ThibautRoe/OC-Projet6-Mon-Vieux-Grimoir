@@ -14,6 +14,8 @@ if (process.env.ENV === "vercel") {
     imageStorageMiddleware = { storage: saveImageOnDisk, optimize: true }
 }
 
+/* Pour info, pour Vercel, le strict minimum a été fait, les images ne sont pas optimisées via sharp avant d'être envoyées vers Cloudinary, et les images ne sont pas supprimées de Cloudinary s'il y a un problème, si un livre est modifié ou si un livre est supprimé */
+
 const router = Router()
 
 router.get("/", getAllBooks)
