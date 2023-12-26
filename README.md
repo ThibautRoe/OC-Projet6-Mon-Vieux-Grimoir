@@ -2,13 +2,15 @@
 
 Project #7 of OpenClassrooms certification / Fullstack Web Developer
 
+Develop the back-end of a book review platform using an API built from scratch with Express.js
+
 ## Preview
 
 -   Hosted back-end (fully functional, DB is restored to initial state on a regular basis for security reasons): https://oc-7-mon-vieux-grimoire-back-end.vercel.app
 -   OpenAPI / Swagger documentation: https://oc-7-mon-vieux-grimoire-back-end.vercel.app/api-docs/
 -   Hosted front-end: https://oc-7-mon-vieux-grimoire.vercel.app/
 
-## Technologies
+## Technologies (back-end)
 
 -   [Express.js](https://expressjs.com/)
 -   [MongoDB Atlas](https://www.mongodb.com/atlas/database)
