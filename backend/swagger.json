@@ -31,7 +31,10 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "$ref": "#/components/schemas/User_request_schema"
+                            },
+                            "examples": {
+                                "default": { "$ref": "#/components/schemas/User_request_example" }
                             }
                         }
                     },
@@ -43,13 +46,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "examples": "User created successfully"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/User_response_signup_schema"
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/User_response_signup_example" }
                                 }
                             }
                         }
@@ -65,7 +65,10 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "$ref": "#/components/schemas/User_request_schema"
+                            },
+                            "examples": {
+                                "default": { "$ref": "#/components/schemas/User_request_example" }
                             }
                         }
                     },
@@ -77,17 +80,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "userId": {
-                                            "type": "string",
-                                            "examples": "654321"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "examples": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/User_response_login_schema"
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/User_response_login_example" }
                                 }
                             }
                         }
@@ -107,8 +103,11 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Book_response"
+                                        "$ref": "#/components/schemas/Book_response_schema"
                                     }
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
                                 }
                             }
                         }
@@ -123,17 +122,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "book": {
-                                        "type": "string",
-                                        "examples": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                }
+                                "$ref": "#/components/schemas/Book_creation_request_schema"
                             }
                         }
                     },
@@ -145,13 +134,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "examples": "Book created successfully"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Book_creation_response_schema"
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/Book_creation_response_example" }
                                 }
                             }
                         }
@@ -179,7 +165,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Book_response"
+                                    "$ref": "#/components/schemas/Book_response_schema"
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
                                 }
                             }
                         }
@@ -204,22 +193,15 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "book": {
-                                        "type": "string",
-                                        "examples": "{\"userId\":\"654321\",\"title\":\"Book title\",\"author\":\"Book author\",\"year\":1999,\"genre\":\"Book genre\"}"
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                }
+                                "$ref": "#/components/schemas/Book_creation_request_schema"
                             }
                         },
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Book_JSON"
+                                "$ref": "#/components/schemas/Book_modification_JSON_request_schema"
+                            },
+                            "examples": {
+                                "default": { "$ref": "#/components/schemas/Book_modification_JSON_request_example" }
                             }
                         }
                     },
@@ -231,13 +213,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "examples": "Book modified successfully"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Book_modification_JSON_response_schema"
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/Book_modification_JSON_response_example" }
                                 }
                             }
                         }
@@ -264,13 +243,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "examples": "Book deleted successfully"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Book_deletion_response_schema"
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/Book_deletion_response_example" }
                                 }
                             }
                         }
@@ -290,8 +266,11 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Book_response"
+                                        "$ref": "#/components/schemas/Book_response_schema"
                                     }
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
                                 }
                             }
                         }
@@ -318,7 +297,10 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Book_set_rating"
+                                "$ref": "#/components/schemas/Book_set_rating_request_schema"
+                            },
+                            "examples": {
+                                "default": { "$ref": "#/components/schemas/Book_set_rating_request_example" }
                             }
                         }
                     },
@@ -330,7 +312,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Book_response"
+                                    "$ref": "#/components/schemas/Book_response_schema"
+                                },
+                                "examples": {
+                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
                                 }
                             }
                         }
@@ -341,89 +326,76 @@
     },
     "components": {
         "schemas": {
-            "User": {
+            "User_request_schema": {
                 "type": "object",
                 "properties": {
                     "email": {
-                        "type": "string",
-                        "examples": "email@domain.com"
+                        "type": "string"
                     },
                     "password": {
-                        "type": "string",
-                        "examples": "MyStrongPassword1!"
+                        "type": "string"
                     }
                 }
             },
-            "Book_JSON": {
+            "User_request_example": {
+                "value": {
+                    "email": "email@domain.com",
+                    "password": "MyStrongPassword1!"
+                }
+            },
+            "User_response_signup_schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "User_response_signup_example": {
+                "value": {
+                    "message": "User created successfully"
+                }
+            },
+            "User_response_login_schema": {
                 "type": "object",
                 "properties": {
                     "userId": {
-                        "type": "string",
-                        "examples": "654321"
+                        "type": "string"
                     },
-                    "title": {
-                        "type": "string",
-                        "examples": "Book title"
-                    },
-                    "author": {
-                        "type": "string",
-                        "examples": "Book author"
-                    },
-                    "year": {
-                        "type": "number",
-                        "examples": 1999
-                    },
-                    "genre": {
-                        "type": "string",
-                        "examples": "Book genre"
+                    "token": {
+                        "type": "string"
                     }
                 }
             },
-            "Book_set_rating": {
-                "type": "object",
-                "properties": {
-                    "userId": {
-                        "type": "string",
-                        "examples": "654321"
-                    },
-                    "rating": {
-                        "type": "number",
-                        "minimum": 0,
-                        "maximum": 5,
-                        "examples": 5
-                    }
+            "User_response_login_example": {
+                "value": {
+                    "userId": "654321",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                 }
             },
-            "Book_response": {
+            "Book_response_schema": {
                 "type": "object",
                 "properties": {
                     "_id": {
-                        "type": "string",
-                        "examples": "654321"
+                        "type": "string"
                     },
                     "userId": {
-                        "type": "string",
-                        "examples": "654321"
+                        "type": "string"
                     },
                     "title": {
-                        "type": "string",
-                        "examples": "Book title"
+                        "type": "string"
                     },
                     "author": {
-                        "type": "string",
-                        "examples": "Book author"
+                        "type": "string"
                     },
                     "imageUrl": {
-                        "type": "string",
-                        "examples": "https://url.com/image.png"
+                        "type": "string"
                     },
                     "year": {
-                        "type": "number",
-                        "examples": 1999
+                        "type": "number"
                     },
                     "genre": {
-                        "type": "string",
-                        "examples": "Book genre"
+                        "type": "string"
                     },
                     "ratings": {
                         "type": "array",
@@ -431,18 +403,15 @@
                             "type": "object",
                             "properties": {
                                 "userId": {
-                                    "type": "string",
-                                    "examples": "654321"
+                                    "type": "string"
                                 },
                                 "grade": {
                                     "type": "number",
                                     "minimum": 0,
-                                    "maximum": 5,
-                                    "examples": 5
+                                    "maximum": 5
                                 },
                                 "_id": {
-                                    "type": "string",
-                                    "examples": "654321"
+                                    "type": "string"
                                 }
                             }
                         }
@@ -450,9 +419,131 @@
                     "averageRating": {
                         "type": "number",
                         "minimum": 0,
-                        "maximum": 5,
-                        "examples": 5
+                        "maximum": 5
                     }
+                }
+            },
+            "Book_response_example": {
+                "value": {
+                    "_id": "654321",
+                    "userId": "654321",
+                    "title": "Book title",
+                    "author": "Book author",
+                    "imageUrl": "https://url.com/image.png",
+                    "year": 1999,
+                    "genre": "Book genre",
+                    "ratings": [
+                        {
+                            "userId": "654321",
+                            "grade": 5,
+                            "_id": "654321"
+                        },
+                        {
+                            "userId": "75432",
+                            "grade": 4,
+                            "_id": "75432"
+                        }
+                    ],
+                    "averageRating": 4.5
+                }
+            },
+            "Book_creation_request_schema": {
+                "type": "object",
+                "properties": {
+                    "book": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                }
+            },
+            "Book_creation_response_schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_creation_response_example": {
+                "value": {
+                    "message": "Book created successfully"
+                }
+            },
+            "Book_modification_JSON_request_schema": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "number"
+                    },
+                    "genre": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_modification_JSON_request_example": {
+                "value": {
+                    "userId": "654321",
+                    "title": "New book title",
+                    "author": "New book author",
+                    "year": 2000,
+                    "genre": "New book genre"
+                }
+            },
+            "Book_modification_JSON_response_schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_modification_JSON_response_example": {
+                "value": {
+                    "message": "Book modified successfully"
+                }
+            },
+            "Book_deletion_response_schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_deletion_response_example": {
+                "value": {
+                    "message": "Book deleted successfully"
+                }
+            },
+            "Book_set_rating_request_schema": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "rating": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 5
+                    }
+                }
+            },
+            "Book_set_rating_request_example": {
+                "value": {
+                    "userId": "654321",
+                    "rating": 5
                 }
             }
         },
