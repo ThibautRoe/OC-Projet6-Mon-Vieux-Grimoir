@@ -19,7 +19,7 @@ Project #7 of OpenClassrooms certification / Fullstack Web Developer
 ### ⚠️ Important Notes
 
 This project's backend needs a .env file to work properly on local\
-It is are not hosted on this Github repo, please get in touch with the author in order to get them
+It is not hosted on this Github repo, please get in touch with the author in order to get it
 
 ### 🛠️ Install Dependencies
 
