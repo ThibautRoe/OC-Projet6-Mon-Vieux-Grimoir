@@ -1,4 +1,5 @@
 import express from "express"
+import { Router } from "express"
 import helmet from "helmet"
 import swaggerUi from "swagger-ui-express"
 import { connect } from "mongoose"
@@ -61,17 +62,19 @@ export default async function configureApp() {
 
         app.use(globalLimiter)
 
+        const router = Router()
+
         if (process.env.ENV !== "vercel") {
-            console.log(swaggerDocument)
-            app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+            router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
         } else {
-            console.log(swaggerCustom)
-            app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerCustom))
+            router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerCustom))
         }
 
-        app.use("/api/auth", authLimiter1, authLimiter2, userRoutes)
-        app.use("/api/books", booksLimiter, bookRoutes)
-        app.use("/images", express.static(path.join(dirPath, "images")))
+        router.use("/api/auth", authLimiter1, authLimiter2, userRoutes)
+        router.use("/api/books", booksLimiter, bookRoutes)
+        router.use("/images", express.static(path.join(dirPath, "images")))
+
+        app.use(router)
 
         return app
     } catch (error) {
