@@ -1,5 +1,4 @@
 import express from "express"
-import { Router } from "express"
 import helmet from "helmet"
 import swaggerUi from "swagger-ui-express"
 import { connect } from "mongoose"
@@ -23,7 +22,11 @@ if (process.env.ENV !== "vercel") {
 } else {
     // Obligé de faire comme ça pour Vercel sinon ça ne fonctionne pas
     swaggerCustom = {
-        customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css",
+        customCssUrl: "https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui.css",
+        customJs: [
+            "https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui-bundle.js",
+            "https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui-standalone-preset.js",
+        ],
         swaggerOptions: {
             url: "https://oc-7-mon-vieux-grimoire-back-end.vercel.app/swagger.json",
         },
@@ -55,6 +58,7 @@ export default async function configureApp() {
             res.setHeader("Access-Control-Allow-Origin", "*")
             res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization")
             res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS")
+            res.setHeader("Content-Security-Policy", "script-src 'self' unpkg.com")
             next()
         })
 
@@ -62,19 +66,16 @@ export default async function configureApp() {
 
         app.use(globalLimiter)
 
-        const router = Router()
-
         if (process.env.ENV !== "vercel") {
-            router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+            app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
         } else {
-            router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerCustom))
+            console.log("Swagger UI custom")
+            app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerCustom))
         }
 
-        router.use("/api/auth", authLimiter1, authLimiter2, userRoutes)
-        router.use("/api/books", booksLimiter, bookRoutes)
-        router.use("/images", express.static(path.join(dirPath, "images")))
-
-        app.use(router)
+        app.use("/api/auth", authLimiter1, authLimiter2, userRoutes)
+        app.use("/api/books", booksLimiter, bookRoutes)
+        app.use("/images", express.static(path.join(dirPath, "images")))
 
         return app
     } catch (error) {
