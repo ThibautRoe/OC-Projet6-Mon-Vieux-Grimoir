@@ -338,6 +338,7 @@
                 }
             },
             "User_request_example": {
+                "type": "object",
                 "value": {
                     "email": "email@domain.com",
                     "password": "MyStrongPassword1!"
@@ -352,6 +353,7 @@
                 }
             },
             "User_response_signup_example": {
+                "type": "object",
                 "value": {
                     "message": "User created successfully"
                 }
@@ -368,6 +370,7 @@
                 }
             },
             "User_response_login_example": {
+                "type": "object",
                 "value": {
                     "userId": "654321",
                     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
@@ -424,6 +427,7 @@
                 }
             },
             "Book_response_example": {
+                "type": "object",
                 "value": {
                     "_id": "654321",
                     "userId": "654321",
@@ -468,6 +472,7 @@
                 }
             },
             "Book_creation_response_example": {
+                "type": "object",
                 "value": {
                     "message": "Book created successfully"
                 }
@@ -493,6 +498,7 @@
                 }
             },
             "Book_modification_JSON_request_example": {
+                "type": "object",
                 "value": {
                     "userId": "654321",
                     "title": "New book title",
@@ -510,6 +516,7 @@
                 }
             },
             "Book_modification_JSON_response_example": {
+                "type": "object",
                 "value": {
                     "message": "Book modified successfully"
                 }
@@ -523,6 +530,7 @@
                 }
             },
             "Book_deletion_response_example": {
+                "type": "object",
                 "value": {
                     "message": "Book deleted successfully"
                 }
@@ -541,6 +549,7 @@
                 }
             },
             "Book_set_rating_request_example": {
+                "type": "object",
                 "value": {
                     "userId": "654321",
                     "rating": 5
