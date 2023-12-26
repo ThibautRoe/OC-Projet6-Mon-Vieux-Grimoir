@@ -62,8 +62,10 @@ export default async function configureApp() {
         app.use(globalLimiter)
 
         if (process.env.ENV !== "vercel") {
+            console.log(swaggerDocument)
             app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
         } else {
+            console.log(swaggerCustom)
             app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerCustom))
         }
 
