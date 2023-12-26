@@ -34,7 +34,7 @@
                                 "$ref": "#/components/schemas/User_request_schema"
                             },
                             "examples": {
-                                "default": { "$ref": "#/components/schemas/User_request_example" }
+                                "default": { "$ref": "#/components/examples/User_request_example" }
                             }
                         }
                     },
@@ -49,7 +49,7 @@
                                     "$ref": "#/components/schemas/User_response_signup_schema"
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/User_response_signup_example" }
+                                    "default": { "$ref": "#/components/examples/User_response_signup_example" }
                                 }
                             }
                         }
@@ -68,7 +68,7 @@
                                 "$ref": "#/components/schemas/User_request_schema"
                             },
                             "examples": {
-                                "default": { "$ref": "#/components/schemas/User_request_example" }
+                                "default": { "$ref": "#/components/examples/User_request_example" }
                             }
                         }
                     },
@@ -83,7 +83,7 @@
                                     "$ref": "#/components/schemas/User_response_login_schema"
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/User_response_login_example" }
+                                    "default": { "$ref": "#/components/examples/User_response_login_example" }
                                 }
                             }
                         }
@@ -107,7 +107,7 @@
                                     }
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
+                                    "default": { "$ref": "#/components/examples/Book_response_example" }
                                 }
                             }
                         }
@@ -137,7 +137,7 @@
                                     "$ref": "#/components/schemas/Book_creation_response_schema"
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/Book_creation_response_example" }
+                                    "default": { "$ref": "#/components/examples/Book_creation_response_example" }
                                 }
                             }
                         }
@@ -168,7 +168,7 @@
                                     "$ref": "#/components/schemas/Book_response_schema"
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
+                                    "default": { "$ref": "#/components/examples/Book_response_example" }
                                 }
                             }
                         }
@@ -201,7 +201,7 @@
                                 "$ref": "#/components/schemas/Book_modification_JSON_request_schema"
                             },
                             "examples": {
-                                "default": { "$ref": "#/components/schemas/Book_modification_JSON_request_example" }
+                                "default": { "$ref": "#/components/examples/Book_modification_JSON_request_example" }
                             }
                         }
                     },
@@ -216,7 +216,7 @@
                                     "$ref": "#/components/schemas/Book_modification_JSON_response_schema"
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/Book_modification_JSON_response_example" }
+                                    "default": { "$ref": "#/components/examples/Book_modification_JSON_response_example" }
                                 }
                             }
                         }
@@ -246,7 +246,7 @@
                                     "$ref": "#/components/schemas/Book_deletion_response_schema"
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/Book_deletion_response_example" }
+                                    "default": { "$ref": "#/components/examples/Book_deletion_response_example" }
                                 }
                             }
                         }
@@ -270,7 +270,7 @@
                                     }
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
+                                    "default": { "$ref": "#/components/examples/Book_response_example" }
                                 }
                             }
                         }
@@ -300,7 +300,7 @@
                                 "$ref": "#/components/schemas/Book_set_rating_request_schema"
                             },
                             "examples": {
-                                "default": { "$ref": "#/components/schemas/Book_set_rating_request_example" }
+                                "default": { "$ref": "#/components/examples/Book_set_rating_request_example" }
                             }
                         }
                     },
@@ -315,7 +315,7 @@
                                     "$ref": "#/components/schemas/Book_response_schema"
                                 },
                                 "examples": {
-                                    "default": { "$ref": "#/components/schemas/Book_response_example" }
+                                    "default": { "$ref": "#/components/examples/Book_response_example" }
                                 }
                             }
                         }
@@ -337,25 +337,12 @@
                     }
                 }
             },
-            "User_request_example": {
-                "summary": "Example of User Request",
-                "value": {
-                    "email": "email@domain.com",
-                    "password": "MyStrongPassword1!"
-                }
-            },
             "User_response_signup_schema": {
                 "type": "object",
                 "properties": {
                     "message": {
                         "type": "string"
                     }
-                }
-            },
-            "User_response_signup_example": {
-                "summary": "Example of User Signup Response",
-                "value": {
-                    "message": "User created successfully"
                 }
             },
             "User_response_login_schema": {
@@ -367,13 +354,6 @@
                     "token": {
                         "type": "string"
                     }
-                }
-            },
-            "User_response_login_example": {
-                "summary": "Example of User Login Response",
-                "value": {
-                    "userId": "654321",
-                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                 }
             },
             "Book_response_schema": {
@@ -426,8 +406,95 @@
                     }
                 }
             },
+            "Book_creation_request_schema": {
+                "type": "object",
+                "properties": {
+                    "book": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                }
+            },
+            "Book_creation_response_schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_modification_JSON_request_schema": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "number"
+                    },
+                    "genre": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_modification_JSON_response_schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_deletion_response_schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book_set_rating_request_schema": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "rating": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 5
+                    }
+                }
+            }
+        },
+        "examples": {
+            "User_request_example": {
+                "value": {
+                    "email": "email@domain.com",
+                    "password": "MyStrongPassword1!"
+                }
+            },
+            "User_response_signup_example": {
+                "value": {
+                    "message": "User created successfully"
+                }
+            },
+            "User_response_login_example": {
+                "value": {
+                    "userId": "654321",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                }
+            },
             "Book_response_example": {
-                "summary": "Example of Book Response",
                 "value": {
                     "_id": "654321",
                     "userId": "654321",
@@ -451,54 +518,12 @@
                     "averageRating": 4.5
                 }
             },
-            "Book_creation_request_schema": {
-                "type": "object",
-                "properties": {
-                    "book": {
-                        "type": "string"
-                    },
-                    "image": {
-                        "type": "string",
-                        "format": "binary"
-                    }
-                }
-            },
-            "Book_creation_response_schema": {
-                "type": "object",
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    }
-                }
-            },
             "Book_creation_response_example": {
-                "summary": "Example of Book Creation Response",
                 "value": {
                     "message": "Book created successfully"
                 }
             },
-            "Book_modification_JSON_request_schema": {
-                "type": "object",
-                "properties": {
-                    "userId": {
-                        "type": "string"
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "author": {
-                        "type": "string"
-                    },
-                    "year": {
-                        "type": "number"
-                    },
-                    "genre": {
-                        "type": "string"
-                    }
-                }
-            },
             "Book_modification_JSON_request_example": {
-                "summary": "Example of Book Modification Request",
                 "value": {
                     "userId": "654321",
                     "title": "New book title",
@@ -507,49 +532,17 @@
                     "genre": "New book genre"
                 }
             },
-            "Book_modification_JSON_response_schema": {
-                "type": "object",
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    }
-                }
-            },
             "Book_modification_JSON_response_example": {
-                "summary": "Example of Book Modification Response",
                 "value": {
                     "message": "Book modified successfully"
                 }
             },
-            "Book_deletion_response_schema": {
-                "type": "object",
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    }
-                }
-            },
             "Book_deletion_response_example": {
-                "summary": "Example of Book Deletion Response",
                 "value": {
                     "message": "Book deleted successfully"
                 }
             },
-            "Book_set_rating_request_schema": {
-                "type": "object",
-                "properties": {
-                    "userId": {
-                        "type": "string"
-                    },
-                    "rating": {
-                        "type": "number",
-                        "minimum": 0,
-                        "maximum": 5
-                    }
-                }
-            },
             "Book_set_rating_request_example": {
-                "summary": "Example of Book Rating Request",
                 "value": {
                     "userId": "654321",
                     "rating": 5
